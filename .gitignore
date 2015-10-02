@@ -58,3 +58,9 @@ target/
 
 #virtual environment
 venv/
+
+# my own config
+instance/
+
+# pycharm files
+.idea/
