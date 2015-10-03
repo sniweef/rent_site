@@ -1,18 +1,18 @@
 __author__ = 'hzhigeng'
 
 from flask import Flask
-from rent_shop.views import rent, wanted
+from rent_shop.views import rent, wanted, pictures
 from mongoengine import connect
 
-__all__ = ['app']
+__all__ = ['create_app']
 
-DEFAULT_MODULES = [rent, wanted]
+DEFAULT_BLUEPRINTS = [rent, wanted, pictures]
 DEFAULT_APP_NAME = 'rent_shop'
 
 
 def create_app(config='config', blueprints=None):
     if blueprints is None:
-        blueprints = DEFAULT_MODULES
+        blueprints = DEFAULT_BLUEPRINTS
 
     app = Flask(DEFAULT_APP_NAME, instance_relative_config=True)
 
