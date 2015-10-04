@@ -6,9 +6,9 @@ __author__ = 'hzhigeng'
 
 class User(Document):
     nickname = StringField(required=True, unique=True, max_length=50)
-    callname = StringField(required=True, max_length=50)
-    phone = LongField()
-    email = EmailField()
+    callname = StringField(max_length=50)
+    phone = StringField(max_length=50)
+    email = EmailField(max_length=50)
     wechat = StringField(max_length=50)
     qq = LongField()
 
@@ -30,9 +30,9 @@ class CustomToJsonDoc(Document):
 class RentShop(Document):
     title = StringField(max_length=50)
     locale = StringField(max_length=50)
-    building = StringField(max_length=40)
+    building = StringField(max_length=50)
     price = IntField()
-    pictures = ListField(URLField())
+    pictures = ListField(URLField(max_length=100))
     detail = StringField(max_length=300)
     contacter = ReferenceField(User, reverse_delete_rule=CASCADE)
 
