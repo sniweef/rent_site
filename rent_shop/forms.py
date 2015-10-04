@@ -4,6 +4,13 @@ from wtforms.validators import *
 __author__ = 'hzhigeng'
 
 
+class EmailOrEmpty(Email):
+    def __call__(self, form, field):
+        if not field.data:
+            return True
+        return super(EmailOrEmpty, self).__call__(form, field)
+
+
 class PublishShopForm(Form):
     title = StringField('title', validators=[Length(min=4, max=50)])
     locale = StringField('locale', validators=[Length(min=2, max=50)])
@@ -13,7 +20,7 @@ class PublishShopForm(Form):
     detail = StringField('detail', validators=[Length(min=10, max=300)])
     contacter = StringField('contacter', validators=[Length(min=2, max=50)])
     phone = StringField('phone', validators=[Length(min=5, max=50)])
-    email = StringField('email', validators=[Email()])
+    email = StringField('email', validators=[EmailOrEmpty()])
     wechat = StringField('wechat', validators=[Length(max=50)])
     qq = IntegerField('qq')
 
@@ -22,3 +29,13 @@ class PublishShopForm(Form):
                '\nPictures: ' + str(self.pictures.data) + '\nDetail: ' + self.detail.data + '\nContacter: ' + \
                self.contacter.data + '\nPhone: ' + self.phone.data + '\nEmail: ' + self.email.data + '\nWechat: ' + \
                self.wechat.data + '\nQQ: ' + str(self.qq.data)
+
+
+class PublishWantedForm(Form):
+    title = StringField('title', validators=[Length(min=4, max=50)])
+    detail = StringField('detail', validators=[Length(min=10, max=300)])
+    contacter = StringField('contacter', validators=[Length(min=2, max=50)])
+    phone = StringField('phone', validators=[Length(min=5, max=50)])
+    email = StringField('email', validators=[EmailOrEmpty()])
+    wechat = StringField('wechat', validators=[Length(max=50)])
+    qq = IntegerField('qq')
