@@ -3,8 +3,8 @@ from flask import Blueprint, render_template
 from mongoengine import Q
 from mongoengine.errors import ValidationError, InvalidQueryError
 from bson.objectid import ObjectId
-from rent_shop.models.models import *
 from rent_shop.forms import *
+from rent_shop.models import RentShop, User
 
 __author__ = 'hzhigeng'
 
@@ -31,7 +31,7 @@ def search_rent():
         if not query_result:
             query_result = RentShop.objects(Q(title__icontains=keys[0]) & q_expr)
     else:
-        query_result = Rentshop.objects(title__icontains=key)
+        query_result = RentShop.objects(title__icontains=key)
 
     return query_result.only('id', 'title', 'locale', 'price').skip(from_idx).limit(10).to_json()
 
@@ -58,7 +58,7 @@ def publish_rent():
         return render_template('publish_rent.html')
 
     form = PublishRentForm(request.form)
-    print form
+    #print form
     if form.validate():
         user = get_or_create_user(form)
         user.callname = form.contacter.data
@@ -84,4 +84,10 @@ def publish_rent():
 
 @rent.route('/delete/<rent_shop_id>')
 def delete_rent(rent_shop_id):
-    pass
+    try:
+        if RentShop.objects(id=rent_shop_id).delete():
+            return 'OK'
+        else:
+            abort(404)
+    except ValidationError, InvalidQueryError:
+        abort(404)

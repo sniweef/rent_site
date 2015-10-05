@@ -1,7 +1,7 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, abort
 from mongoengine import Q
 from mongoengine.errors import ValidationError, InvalidQueryError
-from rent_shop.models.models import WantedShop
+from rent_shop.models import WantedShop, User
 from rent_shop.views.rent import get_or_create_user
 from rent_shop.forms import PublishWantedForm
 
@@ -66,4 +66,10 @@ def publish_wanted():
 
 @wanted.route('/delete/<wanted_shop_id>')
 def delete_rent(wanted_shop_id):
-    pass
+    try:
+        if WantedShop.objects(id=wanted_shop_id).delete():
+            return 'OK'
+        else:
+            abort(404)
+    except (ValidationError, InvalidQueryError):
+        abort(404)
