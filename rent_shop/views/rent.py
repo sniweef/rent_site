@@ -57,7 +57,7 @@ def publish_rent():
     if request.method == 'GET':
         return render_template('publish_rent.html')
 
-    form = PublishShopForm(request.form)
+    form = PublishRentForm(request.form)
     print form
     if form.validate():
         user = get_or_create_user(form)

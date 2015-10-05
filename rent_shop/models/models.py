@@ -38,7 +38,7 @@ class RentShop(Document):
 
     def to_json(self):
         data = self.to_mongo()
-        data['_id'] = str(data['_id'])
+        # data['_id'] = str(data['_id'])
         data['contacter'] = {
             'callname': self.contacter.callname,
             'phone': self.contacter.phone,
@@ -56,7 +56,7 @@ class WantedShop(Document):
 
     def to_json(self):
         data = self.to_mongo()
-        data['_id'] = str(data['_id'])
+        # data['_id'] = str(data['_id'])
         data['contacter'] = {
             'callname': self.contacter.callname,
             'phone': self.contacter.phone,

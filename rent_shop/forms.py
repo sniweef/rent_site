@@ -11,7 +11,7 @@ class EmailOrEmpty(Email):
         return super(EmailOrEmpty, self).__call__(form, field)
 
 
-class PublishShopForm(Form):
+class PublishRentForm(Form):
     title = StringField('title', validators=[Length(min=4, max=50)])
     locale = StringField('locale', validators=[Length(min=2, max=50)])
     building = StringField('building', validators=[Length(max=50)])
