@@ -69,8 +69,20 @@ def publish_rent():
         user.qq = form.qq.data
         user.save()
 
-        shop = RentShop(title=form.title.data, locale=form.locale.data, price=form.price.data,
-                        pictures=form.pictures.data, detail=form.detail.data, contacter=user)
+        if form.id.data:
+            shop = RentShop.objects(id=form.id.data).first()
+            if not shop:
+                return 'Cannot find the specific shop with id %s' % form.id.data, 404
+        else:
+            shop = RentShop()
+
+        shop.title = form.title.data
+        shop.locale = form.locale.data
+        shop.price = form.price.data
+        shop.pictures = form.pictures.data
+        shop.detail = form.detail.data
+        shop.contacter = user
+
         shop.save()
         return 'OK'
 

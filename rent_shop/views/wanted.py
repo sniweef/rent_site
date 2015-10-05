@@ -52,7 +52,17 @@ def publish_wanted():
         user.qq = form.qq.data
         user.save()
 
-        shop = WantedShop(title=form.title.data, detail=form.detail.data, contacter=user)
+        if form.id.data:
+            shop = WantedShop.objects(id=form.id.data).first()
+            if not shop:
+                return 'Cannot find the specific shop with id %s' % form.id.data, 404
+        else:
+            shop = WantedShop()
+
+        shop.title = form.title.data
+        shop.detail = form.detail.data
+        shop.contacter = user
+
         shop.save()
         return 'OK'
 
