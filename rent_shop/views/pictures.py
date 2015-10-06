@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Blueprint, request, abort, send_file
 from bson.objectid import ObjectId
 from config import SHOP_PICS_ROOT_DIR, PIC_SERVER_IP, PIC_SERVER_PORT
@@ -8,7 +9,7 @@ __author__ = 'hzhigeng'
 pictures = Blueprint('pictures', __name__, url_prefix='/pictures')
 
 
-@pictures.route('/', methods=['POST'])
+@pictures.route('', methods=['POST'])
 def new_pictures():
     dest_dir_name = str(ObjectId()) + '/'
     pic_dir_path = os.path.join(SHOP_PICS_ROOT_DIR, dest_dir_name)
@@ -29,8 +30,7 @@ def new_pictures():
         file_obj.save(new_file_path)
         pic_urls.append(url_preffix + new_filename)
 
-    return str(pic_urls)
-
+    return json.dumps(pic_urls)
 
 @pictures.route('/<shop_pic_dir>/<shop_pic_name>')
 def view_picture(shop_pic_dir, shop_pic_name):

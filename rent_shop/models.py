@@ -11,6 +11,7 @@ class User(Document):
     email = EmailField(max_length=50)
     wechat = StringField(max_length=50)
     qq = LongField()
+    status = IntField()
 
 
 class CustomToJsonDoc(Document):
