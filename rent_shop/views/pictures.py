@@ -32,6 +32,7 @@ def new_pictures():
 
     return json.dumps(pic_urls)
 
+
 @pictures.route('/<shop_pic_dir>/<shop_pic_name>')
 def view_picture(shop_pic_dir, shop_pic_name):
     image_path = os.path.join(SHOP_PICS_ROOT_DIR, shop_pic_dir + '/' + shop_pic_name)

@@ -22,11 +22,11 @@ def search_wanted():
     key = key.strip()
     keys = key.split(' ')
 
-    q_expr = Q(title__icontains=keys[0])
+    q_expr = Q(address__icontains=keys[0])
     for i in range(1, len(keys)):
-        q_expr = q_expr & Q(title__icontains=keys[i])
+        q_expr = q_expr & Q(address__icontains=keys[i])
 
-    query_result = WantedShop.objects(q_expr).only('id', 'title', 'contacter').skip(from_idx).limit(10)
+    query_result = WantedShop.objects(q_expr).only('id', 'project_name', 'contacter').skip(from_idx).limit(10)
 
     return query_result.to_json()
 
@@ -59,7 +59,7 @@ def publish_wanted():
         else:
             shop = WantedShop()
 
-        shop.title = form.title.data
+        shop.address = form.project_name.data
         shop.detail = form.detail.data
         shop.contacter = user
 

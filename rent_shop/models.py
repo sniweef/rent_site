@@ -28,26 +28,35 @@ class CustomToJsonDoc(Document):
         return bson.json_util.dumps(data)
 
 
-class RentShop(Document):
-    title = StringField(max_length=50)
-    locale = StringField(max_length=50)
-    building = StringField(max_length=50)
+class Shop(EmbeddedDocument):
+    shop_number = StringField(max_length=10)
+    area = IntField()
     price = IntField()
-    pictures = ListField(URLField(max_length=100))
-    detail = StringField(max_length=300)
-    contacter = ReferenceField(User, reverse_delete_rule=CASCADE)
+    project_condition = StringField(max_length=100)
+    others = StringField(max_length=100)  # including potential tenants
 
-    def to_json(self):
-        data = self.to_mongo()
-        # data['_id'] = str(data['_id'])
-        data['contacter'] = {
-            'callname': self.contacter.callname,
-            'phone': self.contacter.phone,
-            'email': self.contacter.email,
-            'wechat': self.contacter.wechat,
-            'qq': self.contacter.qq
-        }
-        return bson.json_util.dumps(data)
+    def __str__(self):
+        return 'shop_number:%s\narea:%d\nprice:%d\nproject_condition:%s\nothers:%s\n' % (self.shop_number, self.area,
+                                                                                         self.price,
+                                                                                         self.project_condition,
+                                                                                         self.others)
+
+
+class RentProject(Document):
+    is_approved = BooleanField()
+    is_sold = BooleanField()
+    pictures = ListField(URLField(max_length=100))
+    brochure = URLField(max_length=100)
+    project_name = StringField(required=True, max_length=50)
+    project_type = IntField()
+    position = StringField(max_length=50)
+    address = StringField(required=True, max_length=50)
+    contacter = StringField(max_length=50)
+    phone = StringField(max_length=50)
+    shops_info = ListField(EmbeddedDocumentField(Shop))
+    shops_price = ListField(IntField())
+    shops_area = ListField(IntField())
+    shops_others = ListField(StringField(max_length=100))
 
 
 class WantedShop(Document):
@@ -72,5 +81,5 @@ if __name__ == '__main__':
     connect('rent_shop')
     user = User(nickname=str(ObjectId()), callname='Mr. Li', phone='12345678')
     user.save()
-    rent_shop = RentShop(title='asdf', locale='afsdf', price=123456, contacter=user)
+    rent_shop = RentProject(title='asdf', locale='afsdf', price=123456, contacter=user)
     rent_shop.save()
