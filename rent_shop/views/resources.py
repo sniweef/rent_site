@@ -6,10 +6,10 @@ from config import SHOP_PICS_ROOT_DIR, PIC_SERVER_IP, PIC_SERVER_PORT
 
 __author__ = 'hzhigeng'
 
-pictures = Blueprint('pictures', __name__, url_prefix='/pictures')
+resources = Blueprint('resources', __name__, url_prefix='/resources')
 
 
-@pictures.route('', methods=['POST'])
+@resources.route('', methods=['POST'])
 def new_pictures():
     dest_dir_name = str(ObjectId()) + '/'
     pic_dir_path = os.path.join(SHOP_PICS_ROOT_DIR, dest_dir_name)
@@ -20,7 +20,7 @@ def new_pictures():
         print('mkdir %s failed!' % pic_dir_path)
         abort(400)
 
-    url_preffix = 'http://%s:%d/pictures/%s' %(PIC_SERVER_IP, PIC_SERVER_PORT, dest_dir_name)
+    url_preffix = 'http://%s:%d/resources/%s' %(PIC_SERVER_IP, PIC_SERVER_PORT, dest_dir_name)
     pic_urls = []
 
     for file_prefix, file_obj in request.files.iteritems():
@@ -33,7 +33,7 @@ def new_pictures():
     return json.dumps(pic_urls)
 
 
-@pictures.route('/<shop_pic_dir>/<shop_pic_name>')
+@resources.route('/<shop_pic_dir>/<shop_pic_name>')
 def view_picture(shop_pic_dir, shop_pic_name):
     image_path = os.path.join(SHOP_PICS_ROOT_DIR, shop_pic_dir + '/' + shop_pic_name)
     if os.path.exists(image_path):
@@ -42,11 +42,11 @@ def view_picture(shop_pic_dir, shop_pic_name):
         abort(404)
 
 
-@pictures.route('/delete/<shop_pic_dir>')
+@resources.route('/delete/<shop_pic_dir>')
 def delete_picture_dir(shop_pic_dir):
     pass
 
 
-@pictures.route('/delete/<shop_pic_dir>/<shop_pic_name>')
+@resources.route('/delete/<shop_pic_dir>/<shop_pic_name>')
 def delete_picture(shop_pic_dir):
     pass

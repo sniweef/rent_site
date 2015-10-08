@@ -50,31 +50,34 @@ class ShopForm(Form):
 
 class PublishRentForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
-    is_sold = BooleanField('is_sold')
+    is_sell = BooleanField('is_sell', validators=[DataRequired()])
     project_name = StringField('project_name', validators=[Length(min=1, max=50)])
-    project_type = IntegerField('project_type')
-    position = StringField('postition', validators=[Length(max=50)])
-    address = StringField('locale', validators=[Length(min=1, max=50)])
+    project_type = IntegerField('project_type', validators=[DataRequired()])
+    position = StringField('position', validators=[Length(max=50)])
+    address = StringField('locale', validators=[Length(min=1, max=50), DataRequired()])
     brochure = StringField('brochure', validators=[URLOrEmpty()])
     pictures = FieldList(StringField(validators=[URL()]), max_entries=3)
-    contacter = StringField('contacter', validators=[Length(min=1, max=50)])
-    phone = StringField('phone', validators=[Length(min=1, max=50)])
+    contacter = StringField('contacter', validators=[Length(min=1, max=50), DataRequired()])
+    phone = StringField('phone', validators=[Length(min=1, max=50), DataRequired()])
     shops_info = FieldList(FormField(ShopForm), label='shops_info')
 
     def __str__(self):
         return ''
         #return 'Title: ' + self.project_name.data + '\nLocale: ' + self.address.data + \
-        #       '\nPictures: ' + str(self.pictures.data) + '\nDetail: ' + self.detail.data + '\nContacter: ' + \
+        #       '\nPictures: ' + str(self.resources.data) + '\nDetail: ' + self.detail.data + '\nContacter: ' + \
         #       self.contacter.data + '\nPhone: ' + self.phone.data + '\nEmail: ' + self.email.data + '\nWechat: ' + \
         #       self.wechat.data + '\nQQ: ' + str(self.qq.data)
 
 
 class PublishWantedForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
-    project_name = StringField('project_name', validators=[Length(min=1, max=50)])
-    detail = StringField('detail', validators=[Length(min=10, max=300)])
-    contacter = StringField('contacter', validators=[Length(min=2, max=50)])
-    phone = StringField('phone', validators=[Length(min=5, max=50)])
-    email = StringField('email', validators=[EmailOrEmpty()])
-    wechat = StringField('wechat', validators=[Length(max=50)])
-    qq = IntegerField('qq')
+    is_buy = BooleanField('is_buy', validators=[DataRequired()])
+    wanter_type = IntegerField('wanter_type', validators=[DataRequired()])
+    intention_type = IntegerField('intention_type', validators=[DataRequired()])
+    business_type = IntegerField('business_type', validators=[DataRequired()])
+    brand_name = StringField('brand_name', validators=[Length(max=10)])
+    area = IntegerField(validators=[DataRequired()])
+    intention_price = IntegerField()
+    project_demand = StringField('project_demand', validators=[Length(max=50)])
+    contacter = StringField('contacter', validators=[Length(min=1, max=50), DataRequired()])
+    phone = StringField('phone', validators=[Length(min=1, max=50), DataRequired()])

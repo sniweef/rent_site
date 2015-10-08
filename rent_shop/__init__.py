@@ -1,12 +1,12 @@
 __author__ = 'hzhigeng'
 
 from flask import Flask
-from rent_shop.views import rent, wanted, pictures
+from rent_shop.views import rent, wanted, resources
 from mongoengine import connect
 
 __all__ = ['create_app']
 
-DEFAULT_BLUEPRINTS = [rent, wanted, pictures]
+DEFAULT_BLUEPRINTS = [rent, wanted, resources]
 DEFAULT_APP_NAME = 'rent_shop'
 
 

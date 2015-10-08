@@ -14,26 +14,12 @@ class User(Document):
     status = IntField()
 
 
-class CustomToJsonDoc(Document):
-    def to_json(self):
-        data = self.to_mongo()
-        data['_id'] = str(data['_id'])
-        data['contacter'] = {
-            'callname': self.contacter.callname,
-            'phone': self.contacter.phone,
-            'email': self.contacter.email,
-            'wechat': self.contacter.wechat,
-            'qq': self.contacter.qq
-        }
-        return bson.json_util.dumps(data)
-
-
 class Shop(EmbeddedDocument):
     shop_number = StringField(max_length=10)
     area = IntField()
     price = IntField()
-    project_condition = StringField(max_length=100)
-    others = StringField(max_length=100)  # including potential tenants
+    project_condition = StringField(max_length=50)
+    others = StringField(max_length=50)  # including potential tenants
 
     def __str__(self):
         return 'shop_number:%s\narea:%d\nprice:%d\nproject_condition:%s\nothers:%s\n' % (self.shop_number, self.area,
@@ -43,8 +29,9 @@ class Shop(EmbeddedDocument):
 
 
 class RentProject(Document):
+    create_time = DateTimeField()
     is_approved = BooleanField()
-    is_sold = BooleanField()
+    is_sell = BooleanField()
     pictures = ListField(URLField(max_length=100))
     brochure = URLField(max_length=100)
     project_name = StringField(required=True, max_length=50)
@@ -56,25 +43,26 @@ class RentProject(Document):
     shops_info = ListField(EmbeddedDocumentField(Shop))
     shops_price = ListField(IntField())
     shops_area = ListField(IntField())
-    shops_others = ListField(StringField(max_length=100))
+    shops_investment = ListField(StringField(max_length=50))
 
 
 class WantedShop(Document):
-    title = StringField(max_length=50)
-    detail = StringField(max_length=300)
-    contacter = ReferenceField(User, reverse_delete_rule=CASCADE)
+    create_time = DateTimeField()
+    is_approved = BooleanField()
+    is_buy = BooleanField()
+    wanter_type = IntField()
+    intention_type = IntField()
+    business_type =IntField()
+    brand_name = StringField(max_length=10)
+    area = IntField()
+    intention_price = IntField()
+    project_demand = StringField(max_length=50)
+    contacter = StringField(min_length=1, max_length=50)
+    phone = StringField(min_length=1, max_length=50)
+    # title = StringField(max_length=50)
+    # detail = StringField(max_length=300)
+    # contacter = ReferenceField(User, reverse_delete_rule=CASCADE)
 
-    def to_json(self):
-        data = self.to_mongo()
-        # data['_id'] = str(data['_id'])
-        data['contacter'] = {
-            'callname': self.contacter.callname,
-            'phone': self.contacter.phone,
-            'email': self.contacter.email,
-            'wechat': self.contacter.wechat,
-            'qq': self.contacter.qq
-        }
-        return bson.json_util.dumps(data)
 
 if __name__ == '__main__':
     from bson.objectid import ObjectId

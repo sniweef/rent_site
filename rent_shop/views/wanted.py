@@ -1,8 +1,8 @@
+from datetime import datetime
 from flask import Blueprint, request, abort
 from mongoengine import Q
 from mongoengine.errors import ValidationError, InvalidQueryError
 from rent_shop.models import WantedShop, User
-from rent_shop.views.rent import get_or_create_user
 from rent_shop.forms import PublishWantedForm
 
 __author__ = 'hzhigeng'
@@ -22,11 +22,13 @@ def search_wanted():
     key = key.strip()
     keys = key.split(' ')
 
-    q_expr = Q(address__icontains=keys[0])
+    q_expr = Q(is_approved=True) & Q(project_demand__icontains=keys[0])
     for i in range(1, len(keys)):
-        q_expr = q_expr & Q(address__icontains=keys[i])
+        q_expr = q_expr & Q(project_demand__icontains=keys[i])
 
-    query_result = WantedShop.objects(q_expr).only('id', 'project_name', 'contacter').skip(from_idx).limit(10)
+    query_result = WantedShop.objects(q_expr).order_by('-create_time').\
+        only('id', 'is_buy', 'wanter_type', 'intention_type', 'business_type', 'brand_name', 'area').\
+        skip(from_idx).limit(10)
 
     return query_result.to_json()
 
@@ -35,7 +37,7 @@ def search_wanted():
 def view_wanted(wanted_shop_id):
     try:
         return WantedShop.objects(id=wanted_shop_id).first().to_json()
-    except (ValidationError, InvalidQueryError):
+    except (ValidationError, AttributeError):
         return '{}'
 
 
@@ -43,28 +45,28 @@ def view_wanted(wanted_shop_id):
 def publish_wanted():
     form = PublishWantedForm(request.form)
     if form.validate():
-        user = get_or_create_user(form)
-        user.callname = form.contacter.data
-        user.phone = form.phone.data
-        # Note: Setting email to empty string will cause ValidationError
-        user.email = form.email.data if form.email.data else None
-        user.wechat = form.wechat.data
-        user.qq = form.qq.data
-        user.save()
-
         if form.id.data:
             shop = WantedShop.objects(id=form.id.data).first()
             if not shop:
                 return 'Cannot find the specific shop with id %s' % form.id.data, 404
         else:
             shop = WantedShop()
+            shop.create_time = datetime.now()
 
-        shop.address = form.project_name.data
-        shop.detail = form.detail.data
-        shop.contacter = user
+        shop.is_approved = False
+        shop.is_buy = form.is_buy.data
+        shop.wanter_type = form.wanter_type.data
+        shop.intention_type = form.intention_type.data
+        shop.business_type = form.business_type.data
+        shop.brand_name = form.brand_name.data
+        shop.area = form.area.data
+        shop.intention_price = form.intention_price.data
+        shop.project_demand = form.project_demand.data
+        shop.contacter = form.contacter.data
+        shop.phone = form.phone.data
 
         shop.save()
-        return 'OK'
+        return str(shop.id)
 
     err_msg = ''
     for name, error in form.errors.iteritems():
@@ -75,11 +77,22 @@ def publish_wanted():
 
 
 @wanted.route('/delete/<wanted_shop_id>')
-def delete_rent(wanted_shop_id):
+def delete_wanted(wanted_shop_id):
     try:
         if WantedShop.objects(id=wanted_shop_id).delete():
             return 'OK'
         else:
             abort(404)
-    except (ValidationError, InvalidQueryError):
+    except (ValidationError, AttributeError):
+        abort(404)
+
+
+@wanted.route('/approve/<wanted_shop_id>')
+def approve_wanted(wanted_shop_id):
+    try:
+        wanted_shop = WantedShop.objects(id=wanted_shop_id).first()
+        wanted_shop.is_approved = True
+        wanted_shop.save()
+        return 'OK'
+    except (ValidationError, AttributeError):
         abort(404)
