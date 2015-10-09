@@ -29,7 +29,7 @@ class Shop(EmbeddedDocument):
 
 
 class RentProject(Document):
-    create_time = DateTimeField()
+    # create_time = DateTimeField()
     is_approved = BooleanField()
     is_sell = BooleanField()
     pictures = ListField(URLField(max_length=100))
@@ -47,7 +47,7 @@ class RentProject(Document):
 
 
 class WantedShop(Document):
-    create_time = DateTimeField()
+    # create_time = DateTimeField()
     is_approved = BooleanField()
     is_buy = BooleanField()
     wanter_type = IntField()

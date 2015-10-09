@@ -5,6 +5,7 @@
 - price：价格，32位整数。
 - project_condition：工程条件，字符串，最长50个字符。
 - others：其它，这里暂定为填写招商对象，字符串，最长50个字符。
+
 ###1.2 招租信息：RentProject类
 - _id：招租商铺的ID。它是个ObjectId对象，包含属性\$oid，该属性对应的值是一条由字母数字组成的24字节字符串，每个用户对应的字符串值都不一样。其对应JSON字符串形如:
 > "_id": {"\$oid": "5610eb3007f4012ca823ecf7"}
@@ -26,6 +27,7 @@
 - shops_price：该工程下所有铺位价格组成的数组。
 - shops_area：该工程下所有铺位面积组成的数组。
 - shops_investment：该工程下所有铺位的招商对象（字符串）组成的数组。
+
 ###1.3 求租信息：WantedShop类
 - _id：求租帖子的ID，是个ObjectId对象。
 - create_time：datetime对象，对应JSON字符串形如：

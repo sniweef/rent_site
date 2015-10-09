@@ -26,7 +26,7 @@ def search_wanted():
     for i in range(1, len(keys)):
         q_expr = q_expr & Q(project_demand__icontains=keys[i])
 
-    query_result = WantedShop.objects(q_expr).order_by('-create_time').\
+    query_result = WantedShop.objects(q_expr).order_by('-id').\
         only('id', 'is_buy', 'wanter_type', 'intention_type', 'business_type', 'brand_name', 'area').\
         skip(from_idx).limit(10)
 
@@ -51,7 +51,7 @@ def publish_wanted():
                 return 'Cannot find the specific shop with id %s' % form.id.data, 404
         else:
             shop = WantedShop()
-            shop.create_time = datetime.now()
+            # shop.create_time = datetime.now()
 
         shop.is_approved = False
         shop.is_buy = form.is_buy.data

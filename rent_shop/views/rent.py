@@ -37,7 +37,7 @@ def search_rent():
             query_result = RentProject.objects(q_expr & Q(address__icontains=key))
 
     return query_result.only('id', 'project_name', 'address', 'shops_price', 'shops_area', 'shops_investment').\
-        order_by('-create_time').skip(from_idx).limit(10).to_json()
+        order_by('-id').skip(from_idx).limit(10).to_json()
 
 
 @rent.route('/view/<rent_project_id>')
@@ -69,7 +69,7 @@ def publish_rent():
                 return 'Cannot find the specific rent_project with id %s' % form.id.data, 404
         else:
             rent_project = RentProject()
-            rent_project.create_time = datetime.now()
+            # rent_project.create_time = datetime.now()
 
         rent_project.is_approved = False
         rent_project.is_sell = form.is_sell.data
