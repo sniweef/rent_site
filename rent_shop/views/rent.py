@@ -1,4 +1,5 @@
-from datetime import datetime
+# -*- coding: utf-8
+
 from flask import request, abort
 from flask import Blueprint, render_template
 from mongoengine import Q
@@ -17,12 +18,42 @@ def search_rent():
     try:
         key = request.args.get('key', '')
         from_idx = int(request.args.get('from', 0))
+        min_area = int(request.args.get('min_area', 0))
+        max_area = int(request.args.get('max_area', 0))
+        min_price = int(request.args.get('min_price', 0))
+        max_price = int(request.args.get('max_price', 0))
+        order_by = int(request.args.get('order_by', 0))  # 0:time, 1:price, 2:area
+        incr = int(request.args.get('incr', 0))
+        investment = request.args.get('invest', '')
+        if investment == '其它':
+            investment = ''
     except ValueError:
-        from_idx = 0
+        abort(400)
 
     key = key.strip()
     keys = key.split(' ')
     q_expr = Q(is_approved=True)
+
+    if max_area > 0 and max_area > min_area:
+        q_expr = q_expr & Q(shops_area__0__gte=min_area, shops_area__0__lte=max_area)
+    elif max_area == 0 and min_area > 0:
+        q_expr = q_expr & Q(shops_area_0_gte=min_area)
+
+    if max_price > 0 and max_price > min_price:
+        q_expr = q_expr & Q(shops_price__0__gte=min_price, shops_area__0__lte=max_area)
+    elif max_price == 0 and min_area > 0:
+        q_expr = q_expr & Q(shops_price__0__gte=min_price)
+
+    try:
+        order_keyword = ['id', 'shops_price', 'shops_area'][order_by]
+    except IndexError:
+        abort(400)
+
+    if not incr:
+        order_keyword = '-' + order_keyword
+
+    if investment:
+        q_expr = q_expr & Q(shops_investment=investment)
 
     if len(keys) > 1:
         q_expr = q_expr & Q(project_name__icontains=keys[1])
@@ -37,7 +68,7 @@ def search_rent():
             query_result = RentProject.objects(q_expr & Q(address__icontains=key))
 
     return query_result.only('id', 'project_name', 'address', 'shops_price', 'shops_area', 'shops_investment').\
-        order_by('-id').skip(from_idx).limit(10).to_json()
+        order_by(order_keyword).skip(from_idx).limit(10).to_json()
 
 
 @rent.route('/view/<rent_project_id>')
@@ -83,14 +114,24 @@ def publish_rent():
         rent_project.contacter = form.contacter.data
         rent_project.phone = form.phone.data
 
+        new_shop_prices = []
+        new_shop_areas = []
         for shop_info in form.shops_info.data:
             new_shop = Shop(shop_number=shop_info['shop_number'], area=shop_info['area'], price=shop_info['price'],
                             project_condition=shop_info['project_condition'], others=shop_info['others'])
             rent_project.shops_info.append(new_shop)
-            rent_project.shops_price.append(new_shop.price)
-            rent_project.shops_area.append(new_shop.area)
+            new_shop_prices.append(new_shop.price)
+            new_shop_areas.append(new_shop.area)
+            # rent_project.shops_price.append(new_shop.price)
+            # rent_project.shops_area.append(new_shop.area)
             rent_project.shops_investment.append(new_shop.others)
 
+        new_shop_prices.sort()
+        new_shop_areas.sort()
+        for i in new_shop_prices:
+            rent_project.shops_price.append(i)
+        for i in new_shop_areas:
+            rent_project.shops_area.append(i)
         rent_project.save()
         return str(rent_project.id)
 

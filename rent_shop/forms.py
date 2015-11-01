@@ -59,7 +59,7 @@ class PublishRentForm(Form):
     pictures = FieldList(StringField(validators=[URL()]), max_entries=3)
     contacter = StringField('contacter', validators=[Length(min=1, max=50), DataRequired()])
     phone = StringField('phone', validators=[Length(min=1, max=50), DataRequired()])
-    shops_info = FieldList(FormField(ShopForm), label='shops_info')
+    shops_info = FieldList(FormField(ShopForm), label='shops_info', validators=[DataRequired()])
 
     def __str__(self):
         return ''
@@ -72,9 +72,9 @@ class PublishRentForm(Form):
 class PublishWantedForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
     is_buy = BooleanField('is_buy', validators=[DataRequired()])
-    wanter_type = IntegerField('wanter_type', validators=[DataRequired()])
-    intention_type = IntegerField('intention_type', validators=[DataRequired()])
-    business_type = IntegerField('business_type', validators=[DataRequired()])
+    wanter_type = StringField('wanter_type', validators=[DataRequired()])
+    intention_type = StringField('intention_type', validators=[DataRequired()])
+    business_type = StringField('business_type', validators=[DataRequired()])
     brand_name = StringField('brand_name', validators=[Length(max=10)])
     area = IntegerField(validators=[DataRequired()])
     intention_price = IntegerField()

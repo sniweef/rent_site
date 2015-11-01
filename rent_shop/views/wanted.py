@@ -1,5 +1,4 @@
-from datetime import datetime
-from flask import Blueprint, request, abort
+from flask import Blueprint, request, abort, render_template
 from mongoengine import Q
 from mongoengine.errors import ValidationError, InvalidQueryError
 from rent_shop.models import WantedShop, User
@@ -16,15 +15,33 @@ def search_wanted():
     try:
         key = request.args.get('key', '')
         from_idx = int(request.args.get('from', 0))
+        is_buy = True if int(request.args.get('is_buy', 0)) else False
+        min_area = int(request.args.get('min_area', 0))
+        max_area = int(request.args.get('max_area', 0))
+        wanter = request.args.get('wanter', '')
+        intention = request.args.get('intention', '')
+        business = request.args.get('business', '')
     except ValueError:
         from_idx = 0
 
     key = key.strip()
     keys = key.split(' ')
 
-    q_expr = Q(is_approved=True) & Q(project_demand__icontains=keys[0])
+    q_expr = Q(is_approved=True) & Q(is_buy=is_buy) & Q(project_demand__icontains=keys[0])
     for i in range(1, len(keys)):
         q_expr = q_expr & Q(project_demand__icontains=keys[i])
+
+    if max_area > 0 and max_area > min_area:
+        q_expr = q_expr & Q(area__gte=min_area, area__lte=max_area)
+    elif max_area == 0 and min_area > 0:
+        q_expr = q_expr & Q(area__gte=min_area)
+
+    if wanter:
+        q_expr = q_expr & Q(wanter_type=wanter)
+    if intention:
+        q_expr = q_expr & Q(intention_type=intention)
+    if business:
+        q_expr = q_expr & Q(business_type=business)
 
     query_result = WantedShop.objects(q_expr).order_by('-id').\
         only('id', 'is_buy', 'wanter_type', 'intention_type', 'business_type', 'brand_name', 'area').\
@@ -41,8 +58,11 @@ def view_wanted(wanted_shop_id):
         return '{}'
 
 
-@wanted.route('/publish', methods=['POST'])
+@wanted.route('/publish', methods=['GET', 'POST'])
 def publish_wanted():
+    if request.method == 'GET':
+        return render_template('publish_wanted.html')
+
     form = PublishWantedForm(request.form)
     if form.validate():
         if form.id.data:
@@ -71,7 +91,7 @@ def publish_wanted():
     err_msg = ''
     for name, error in form.errors.iteritems():
         err_msg = "'%s': %s" % (name, str(error[0]))
-        break  # we only need first error message
+        break  # we only return first error message
 
     return err_msg, 400
 
