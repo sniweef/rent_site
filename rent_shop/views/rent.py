@@ -35,14 +35,15 @@ def search_rent():
     q_expr = Q(is_approved=True)
 
     if max_area > 0 and max_area > min_area:
-        q_expr = q_expr & Q(shops_area__0__gte=min_area, shops_area__0__lte=max_area)
+        q_expr = q_expr & Q(shops_area__gte=min_area, shops_area__lte=max_area)
     elif max_area == 0 and min_area > 0:
-        q_expr = q_expr & Q(shops_area_0_gte=min_area)
+        q_expr = q_expr & Q(shops_area__gte=min_area)
 
     if max_price > 0 and max_price > min_price:
-        q_expr = q_expr & Q(shops_price__0__gte=min_price, shops_area__0__lte=max_area)
-    elif max_price == 0 and min_area > 0:
-        q_expr = q_expr & Q(shops_price__0__gte=min_price)
+        print max_price, ':', min_price
+        q_expr = q_expr & Q(shops_price__gte=min_price, shops_price__lte=max_price)
+    elif max_price == 0 and min_price > 0:
+        q_expr = q_expr & Q(shops_price__gte=min_price)
 
     try:
         order_keyword = ['id', 'shops_price', 'shops_area'][order_by]
