@@ -18,6 +18,7 @@ def search_rent():
     try:
         key = request.args.get('key', '')
         from_idx = int(request.args.get('from', 0))
+        city = request.args.get('city', '')
         min_area = int(request.args.get('min_area', 0))
         max_area = int(request.args.get('max_area', 0))
         min_price = int(request.args.get('min_price', 0))
@@ -53,6 +54,8 @@ def search_rent():
     if not incr:
         order_keyword = '-' + order_keyword
 
+    if city:
+        q_expr = q_expr & Q(address__icontains=city)
     if investment:
         q_expr = q_expr & Q(shops_investment=investment)
 
