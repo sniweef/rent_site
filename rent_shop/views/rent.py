@@ -71,12 +71,17 @@ def search_rent():
         if not query_result:
             query_result = RentProject.objects(q_expr & Q(address__icontains=key))
 
+    show_html = request.args.get('show_html', '')
+    if show_html:
+        return render_template('rent_sold_projects.html')
+
     return query_result.only('id', 'project_name', 'address', 'shops_price', 'shops_area', 'shops_investment').\
         order_by(order_keyword).skip(from_idx).limit(10).to_json()
 
 
 @rent.route('/view/<rent_project_id>')
 def view_rent(rent_project_id):
+
     try:
         return RentProject.objects(id=rent_project_id).first().to_json()
     except (ValidationError, AttributeError):
