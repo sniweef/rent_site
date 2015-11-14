@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/style.css">
+
+        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script type='text/javascript'>
+	$(function() {
+		$('a').click(function() {
+			$(this).closest('ul').prev().text($(this).text());
+		});
+		$(':checkbox').click(function() {
+			//alert($(this).attr('class'));
+			var class_name = $(this).prop('class');
+			$('.'+class_name).prop('checked', false);
+			$(this).prop('checked', true);
+		});
+	});
+	</script>
+</head>
+<body>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+            {% set has_right=1 %}
+            {% include "navigation.html" %}
+		</div>
+		<div class="panel-body">
+	  		<ul class="list-group">
+				{% for obj in obj_list %}
+					<li class="list-group-item">
+						<a href="/{{ prefix }}/view/{{ obj.id }}">{{ obj.project_name }}</a>
+						<a href="/{{ prefix }}/delete/{{ obj.id }}" class="pull-right ">delete</a>
+						<a href="/{{ prefix }}/disable/{{ obj.id }}" class="pull-right ">disable</a>
+						<a href="/{{ prefix }}/approve/{{ obj.id }}" class="pull-right ">approve</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	
+</body>
+</html>

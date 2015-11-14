@@ -1,13 +1,10 @@
-.mtb15 {
-    margin: 15px 0;
-}
-
 .container-fluid > div {
     margin: 10px 0 0 0;
 }
 .dropdown-submenu {
     position: relative;
 }
+
 .dropdown-submenu > .dropdown-menu {
     top: 0;
     left: 100%;
@@ -45,5 +42,47 @@
     -webkit-border-radius: 6px 0 6px 6px;
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
+}
+
+.input-group {
+	padding-top: 5px;
+}
+.top-pad-5 {
+	padding-top: 5px;
+}
+body { 
+	padding-top: 20px; 
+}
+
+li a {
+	padding-right: 5px;
+}
+.right-pad-5 {
+	padding-right: 5px;
+}
+.cus-label {
+	padding-top: 5px;
+}
+.panel {
+	margin-top: 10px;	
+}
+.btn-file {
+	position: relative;
+	overflow: hidden;
+}
+.btn-file input[type=file] {
+	position: absolute;
+	top: 0;
+	right: 0;
+	min-width: 100%;
+	min-height: 100%;
+	font-size: 100px;
+	text-align: right;
+	filter: alpha(opacity=0);
+	opacity: 0;
+	outline: none;
+	background: white;
+	cursor: inherit;
+	display: block;
 }
 

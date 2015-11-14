@@ -1,30 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <form action="/rent/publish" method="post">
-        <input name="title" type="text">title<br>
-        <input name="locale" type="text">locale<br>
-        <input name="price" type="text">price<br>
-        <input name="detail" type="text">detail<br>
-        <input name="contacter" type="text">contacter<br>
-        <input name="phone" type="text">phone<br>
-        <input name="email" type="text">email<br>
-        <input name="wechat" type="text">wechat<br>
-        <ol>
-            <li>
-            <input type="text" name="pictures" value="http://1.jpg"><br>
-            </li>
-            <li>
-            <input type="text" name="pictures" value="http://2.jpg"><br>
-            </li>
-        </ol>
-        <input name="qq" type="text">qq<br>
-        <input type="submit">
-    </form>
+<html lang='zh-CN'>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-</body>
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/style.css">
+
+        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+        <script type='text/javascript'>
+        function add_shop(btn_obj) {
+            var shop_panel = $(btn_obj).closest('.panel');
+            var shop_panel_clone = shop_panel.clone();
+            shop_panel_clone.find('input').val('');
+            shop_panel.after(shop_panel_clone);
+        }
+function del_shop(btn_obj) {
+    var shop_panels = $('.panel-body .panel');
+    if (shop_panels.length <= 1) {
+        return alert("Must contain at least one shop.");
+    }
+    if (confirm('Do you really want to delete this entry?')) {
+        $(btn_obj).closest('.panel').remove();
+    }
+}
+$(function() {
+    $('a').click(function() {
+        $(this).closest('ul').prev().text($(this).text());
+    })
+});
+$(document).on('change', '.btn-file :file', function() {
+    var btn = $(this);
+    /*numFiles = input.get(0).files ? input.get(0).files.length : 1,
+      label = input.val().replace(/\\/g, '/').replace(/.*\//, '');*/
+    var file_list = btn.get(0).files;
+    var file_num = file_list.length;
+    var filenames_str = '';
+    for (var i = 0; i < file_num; i++) {
+        filenames_str += file_list[i].name + ';'
+    }
+    btn.closest('.input-group-btn').prev().val(filenames_str);
+    //input.trigger('fileselect', [numFiles, label]);
+});
+function upload_file(upload_idx) {
+
+    console.log(upload_idx);
+}
+/*
+   $(document).ready(function() {
+   $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+   console.log(numFiles);
+   console.log(label);
+   });
+   });*/
+        </script>
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-heading">			
+                {% include "navigation.html" %}
+            </div>
+            <div class="panel-body">
+                <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
+                    <label class='cus-label'>asdf</label><br>
+                    <span>asdf</span>
+
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Select file..." disabled>
+                        <span class="input-group-btn">
+                            <span class="btn btn-default btn-file">
+                                Browse<input type="file" multiple>
+                            </span>
+                            <button class="btn btn-default" type="button" onclick="upload_file(1)">Go!</button>
+                        </span>
+                    </div>
+
+                    <div class="list-group top-pad-5">
+                        <a href="#" class="list-group-item">
+                            Cras justo odio
+                        </a>
+                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                    </div>
+                    <label class='cus-label'>asdf</label><br>
+                    <span>asdf</span>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Select file..." disabled>
+                        <span class="input-group-btn">
+                            <span class="btn btn-default btn-file">Browse<input type="file" multiple></span>
+                            <button class="btn btn-default" type="button" onclick="upload_file(2)">Go!</button>
+                        </span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">name</span>
+                        <input type="text" class="form-control" aria-label="...">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a >Action</a></li>
+                                <li><a >Another action</a></li>
+                                <li><a >Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a >Separated link</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!--
+                        <div class="input-group">
+                        <span class="input-group-addon">name</span>
+                        <input class="form-control" aria-label="Amount (to the nearest dollar)" type="text">
+                        <span class="input-group-addon">.00</span>
+                        </div>-->
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>new</span>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-default btn-xs" onclick="add_shop(this)">Add</button>
+                                    <button type="button" class="btn btn-default btn-xs" onclick="del_shop(this)">Delete</button>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">a</span>
+                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+
+                                    <span class="input-group-addon" id="basic-addon2">a</span>
+                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">a</span>
+                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                </div>
+                            </div>
+                        </div>
+                        <p class="bg-danger"></p>
+                        <button type="button" class="btn btn-primary">Primary</button>
+                </form>
+            </div>
+        </div>
+
+    </body>
 </html>

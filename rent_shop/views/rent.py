@@ -71,7 +71,7 @@ def search_rent():
         if not query_result:
             query_result = RentProject.objects(q_expr & Q(address__icontains=key))
 
-    show_html = request.args.get('show_html', '')
+    show_html = request.args.get('html', '')
     if show_html:
         return render_template('rent_sold_projects.html')
 
@@ -81,7 +81,6 @@ def search_rent():
 
 @rent.route('/view/<rent_project_id>')
 def view_rent(rent_project_id):
-
     try:
         return RentProject.objects(id=rent_project_id).first().to_json()
     except (ValidationError, AttributeError):
@@ -172,3 +171,20 @@ def approve_rent(rent_project_id):
         return 'OK'
     except (ValidationError, AttributeError):
         abort(404)
+
+
+@rent.route('/disable/<rent_project_id>')
+def disable_rent(rent_project_id):
+    try:
+        rent_project = RentProject.objects(id=rent_project_id).first()
+        rent_project.is_approved = False
+        rent_project.save()
+        return 'OK'
+    except (ValidationError, AttributeError):
+        abort(404)
+
+
+@rent.route('/list')
+def manage_rent():
+    if request.method == 'GET':
+        return render_template('manage.html', obj_list=RentProject.objects(), prefix='rent')

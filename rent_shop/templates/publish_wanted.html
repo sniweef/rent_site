@@ -1,24 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+<html lang='zh-CN'>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-<form action="/wanted/publish" method="post">
-    <input name="is_buy" type="text">is_buy<br>
-    <input name="wanter_type" type="text">wanter_type<br>
-    <input name="intention_type" type="text">intention_type<br>
-    <input name="business_type" type="text">business_type<br>
-    <input name="brand_name" type="text">brand_name<br>
-    <input name="area" type="text">area<br>
-    <input name="intention_price" type="text">intention_price<br>
-    <input name="project_demand" type="text">project_demand<br>
-    <input name="contacter" type="text">contacter<br>
-    <input name="phone" type="text">phone<br>
-    <input type="submit">
-</form>
+        <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/style.css">
 
-</body>
+        <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+        <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type='text/javascript'>
+            $(function() {
+                $('a').click(function() {
+                    $(this).closest('ul').prev().text($(this).text());
+                });
+                $(':checkbox').click(function() {
+                    //alert($(this).attr('class'));
+                    var class_name = $(this).prop('class');
+                    $('.'+class_name).prop('checked', false);
+                    $(this).prop('checked', true);
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-heading">	
+                {% include "navigation.html" %}
+            </div>
+            <div class="panel-body">
+                <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
+                    <div class="input-group">
+                        <span class="input-group-addon ">
+                            <input type="checkbox" aria-label="..." class="rent_or_by">
+                            <span>rent</span>
+                        </span>
+                        <span class="input-group-addon">
+                            <input type="checkbox" aria-label="..." class="rent_or_by">
+                            <span>buy</span>
+                        </span>
+                        <span>  </span>
+                        <span class="input-group-addon">
+                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <span>p</span>
+                        </span>
+                        <span class="input-group-addon">
+                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <span>s</span>
+                        </span>
+                        <span class="input-group-addon">
+                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <span>company</span>
+                        </span>
+                    </div><!-- /input-group -->
+                    <div class="input-group">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a >Action</a></li>
+                                <li><a >Another action</a></li>
+                                <li><a >Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a >Separated link</a></li>
+                            </ul>
+                        </div>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a >Action</a></li>
+                                <li><a >Another action</a></li>
+                                <li><a >Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a >Separated link</a></li>
+                            </ul>
+                        </div>
+                        <span class="input-group-addon">name</span>
+                        <input type="text" class="form-control" aria-label="...">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2">a</span>
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                        <span class="input-group-addon" id="basic-addon2">a</span>
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                        <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
+                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                    </div>
+                    <p class="bg-danger"></p>
+                    <button type="button" class="btn btn-primary">Primary</button>
+                </form>
+            </div>
+        </div>
+
+    </body>
 </html>
