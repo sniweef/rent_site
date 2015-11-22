@@ -164,6 +164,9 @@ id：当前招租帖子的ID字符串，如上面例子里提到的 字符串：
 > "shops_price": [1000], "address": "shenzhen baoan", "shops_area":
 > [100]}]
 
+###2.7 管理求租信息
+1) 访问URL: http://IP/rent/list
+
 由上可以看到虽然project_name里不包括关键字baoan，但是address字段里有，所以就得到了这两个结果。这里如果搜索project也可以得到上面两个结果。
 
 ##3. 求租信息管理

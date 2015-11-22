@@ -4,6 +4,14 @@
 .dropdown-submenu {
     position: relative;
 }
+.panel-body {
+    padding: 0;
+}
+
+.panel-body .container-fluid {
+    padding-right: 0;
+    padding-left: 0;
+}
 
 .dropdown-submenu > .dropdown-menu {
     top: 0;

@@ -112,6 +112,7 @@ def publish_rent():
 
         rent_project.is_approved = False
         rent_project.is_sell = form.is_sell.data
+        print rent_project.is_sell
         rent_project.pictures = form.pictures.data
         # url must be None instead of empty string because empty string will cause ValidationError: Not a valid url
         rent_project.brochure = form.brochure.data if form.brochure.data else None

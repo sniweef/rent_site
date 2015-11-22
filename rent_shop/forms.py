@@ -50,7 +50,7 @@ class ShopForm(Form):
 
 class PublishRentForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
-    is_sell = BooleanField('is_sell', validators=[DataRequired()])
+    is_sell = BooleanField('is_sell', false_values=('0', 'false'))
     project_name = StringField('project_name', validators=[Length(min=1, max=50)])
     project_type = IntegerField('project_type', validators=[DataRequired()])
     position = StringField('position', validators=[Length(max=50)])
@@ -71,7 +71,7 @@ class PublishRentForm(Form):
 
 class PublishWantedForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
-    is_buy = BooleanField('is_buy', validators=[DataRequired()])
+    is_buy = BooleanField('is_buy', false_values=('false', '0'))
     wanter_type = StringField('wanter_type', validators=[DataRequired()])
     intention_type = StringField('intention_type', validators=[DataRequired()])
     business_type = StringField('business_type', validators=[DataRequired()])

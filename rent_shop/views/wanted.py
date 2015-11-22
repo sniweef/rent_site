@@ -75,6 +75,7 @@ def publish_wanted():
 
         shop.is_approved = False
         shop.is_buy = form.is_buy.data
+        print shop.is_buy
         shop.wanter_type = form.wanter_type.data
         shop.intention_type = form.intention_type.data
         shop.business_type = form.business_type.data
@@ -116,3 +117,14 @@ def approve_wanted(wanted_shop_id):
         return 'OK'
     except (ValidationError, AttributeError):
         abort(404)
+
+
+@wanted.route('/list')
+def manage_rent():
+    obj_list = []
+    for i in WantedShop.objects():
+        i.project_name = i.project_demand
+        obj_list.append(i)
+
+    if request.method == 'GET':
+        return render_template('manage.html', obj_list=obj_list, prefix='wanted')
