@@ -4,6 +4,60 @@
     <meta charset="UTF-8">
     <title></title>
     {% include 'include_files.html' %}
+    <script type="text/javascript">
+        var g_get_args = '';
+
+        function replace_arg(arg_name, arg_value) {
+                var pattern = RegExp(arg_name + '=[^&]*&', 'g');
+                var new_str = arg_name + '=' + arg_value + '&';
+                var test_result = pattern.test(g_get_args);
+
+                if (test_result) {
+                    g_get_args = g_get_args.replace(pattern, new_str);
+                } else {
+                    g_get_args += new_str;
+                }
+        }
+
+function city_filter(city_idx) {
+}
+function area_filter(area_idx) {
+    var idx_val_map = [
+        [0, 100],
+        [100, 500],
+        [500, 1000],
+        [1000, 0]
+    ];
+        replace_arg('min_area', idx_val_map[area_idx][0]);
+        replace_arg('max_area', idx_val_map[area_idx][1]);
+}
+function price_filter(price_idx) {
+}
+function sort_filter(sort_idx) {
+
+}
+function invest_filter(invest_idx) {
+}
+var selector_func_map = {
+    'city-selector': city_filter,
+    'area-selector': area_filter,
+    'price-selector': price_filter,
+    'sort-selector': sort_filter,
+    'invest-selector': invest_filter,
+};
+
+function li_selected() {
+    var parent_id = $(this).parent().attr('id');
+    if (parent_id in selector_func_map)
+    {
+        selector_func_map[parent_id]($(this).index());
+        $(this).closest('ul').prev().text($(this).text());
+    }
+}
+$(function(){
+    $('li').click(li_selected);
+});
+        </script>
 </head>
 <body>
 
@@ -35,6 +89,15 @@
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            意向 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="area-selector">
+                            <li><a>购买</a></li>
+                            <li><a>承租</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             面积 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" id="area-selector">
@@ -44,18 +107,6 @@
                             <li><a>1000m<sup>2</sup>以上</a></li>
                         </ul>
                     </div>
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            价格 <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" id="price-selector">
-                            <li><a>50元/m<sup>2</sup>以下</a></li>
-                            <li><a>50 - 300元/m<sup>2</sup></a></li>
-                            <li><a>300 - 800元/m<sup>2</sup></a></li>
-                            <li><a>800 - 1500元/m<sup>2</sup></a></li>
-                            <li><a>1500元/m<sup>2</sup>以上</a></li>
-                        </ul>
-                    </div>
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -63,26 +114,34 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu pull-left">
-                                <a tabindex="-1" href="#">排序</a>
+                                <a tabindex="-1" href="#">营运</a>
                                 <ul class="dropdown-menu" id="sort-selector">
-                                    <li><a>价格从低到高</a></li>
-                                    <li><a>价格从高到高</a></li>
-                                    <li><a>使用面积从小到大</a></li>
-                                    <li><a>使用面积从大到小</a></li>
+                                    <li><a>个人	</a></li>
+                                    <li><a>加盟商</a></li>
+                                    <li><a>公司直营</a></li>
                                 </ul>
                             </li>
                             <li class="dropdown-submenu pull-left">
-                                <a tabindex="-1" href="#">招商对象</a>
+                                <a tabindex="-1" href="#">目标</a>
                                 <ul class="dropdown-menu" id="invest-selector">
-                                    <li><a>百货超市</a></li>
-                                    <li><a>零售餐饮</a></li>
-                                    <li><a>娱乐休闲</a></li>
-                                    <li><a>银行金融</a></li>
-                                    <li><a>专业服务</a></li>
-                                    <li><a>其它</a></li>
+                                    <li><a>购物中心</a></li>
+                                    <li><a>步行街</a></li>
+                                    <li><a>星级酒店</a></li>
+                                    <li><a>社区商业</a></li>
                                 </ul>
                             </li>
-
+			　　　　<li class="dropdown-submenu pull-left">
+                                <a tabindex="-1" href="#">经营</a>
+                                <ul class="dropdown-menu" id="invest-selector">
+                                    <li><a>零售</a></li>
+                                    <li><a>专卖</a></li>
+                                    <li><a>餐饮</a></li>
+                                    <li><a>娱乐</a></li>
+                                    <li><a>生活服务</a></li>
+                                    <li><a>银行</a></li>
+                                    <li><a>金融</a></li>
+                                </ul>
+                            </li>
                         </ul>
                     </div>
 

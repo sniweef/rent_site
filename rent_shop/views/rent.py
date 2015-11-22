@@ -50,6 +50,7 @@ def search_rent():
         order_keyword = ['id', 'shops_price', 'shops_area'][order_by]
     except IndexError:
         abort(400)
+    print order_by, incr
 
     if not incr:
         order_keyword = '-' + order_keyword
@@ -73,7 +74,7 @@ def search_rent():
 
     show_html = request.args.get('html', '')
     if show_html:
-        return render_template('rent_sold_projects.html')
+        return render_template('search_rent_result.html', shop_list=query_result.order_by(order_keyword))
 
     return query_result.only('id', 'project_name', 'address', 'shops_price', 'shops_area', 'shops_investment').\
         order_by(order_keyword).skip(from_idx).limit(10).to_json()
@@ -189,3 +190,9 @@ def disable_rent(rent_project_id):
 def manage_rent():
     if request.method == 'GET':
         return render_template('manage.html', obj_list=RentProject.objects(), prefix='rent')
+
+
+@rent.route('/search_controller')
+def search_controller():
+    if request.method == 'GET':
+        return render_template('rent_sold_projects.html')

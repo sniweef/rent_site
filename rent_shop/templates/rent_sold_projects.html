@@ -32,13 +32,39 @@ function area_filter(area_idx) {
         replace_arg('max_area', idx_val_map[area_idx][1]);
 }
 function price_filter(price_idx) {
+    var idx_val_map = [
+        [0, 50],
+        [50, 300],
+        [300, 800],
+        [800, 1500],
+        [1500, 0]
+    ];
+    replace_arg('min_price', idx_val_map[price_idx][0]);
+    replace_arg('max_price', idx_val_map[price_idx][1]);
 }
 function sort_filter(sort_idx) {
-
+    var idx_val_map = [
+        // order_by, incr
+        [1, 1],
+        [1, 0],
+        [2, 1],
+        [2, 0]
+    ];
+    replace_arg('order_by', idx_val_map[sort_idx][0]);
+    replace_arg('incr', idx_val_map[sort_idx][1]);
 }
 function invest_filter(invest_idx) {
+    var idx_val_map = [
+        '百货超市',
+        '零售餐饮',
+        '娱乐休闲',
+        '银行金融',
+        '专业服务',
+        '其它'
+    ];
+    replace_arg('invest', idx_val_map[invest_idx]);
 }
-var selector_func_map = {
+ selector_func_map = {
     'city-selector': city_filter,
     'area-selector': area_filter,
     'price-selector': price_filter,
@@ -51,10 +77,22 @@ function li_selected() {
     if (parent_id in selector_func_map)
     {
         selector_func_map[parent_id]($(this).index());
+        $(this).closest('ul').prev().text($(this).text());
     }
+}
+function refresh_result() {
+    console.log(g_get_args);
+    var url = "/rent/search?html=1&key=" + $('#search_key').val() + '&' + g_get_args;
+    console.log(url);
+    $.get(url, function(result) {
+        $('#result_container').html(result);
+    });
 }
 $(function(){
     $('li').click(li_selected);
+    $.get("/rent/search?html=1", function(result){
+        $("#result_container").html(result);
+  });
 });
         </script>
     </head>
@@ -69,9 +107,9 @@ $(function(){
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search for...">
+                                <input type="text" class="form-control" placeholder="Search for..." id="search_key">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">Go!</button>
+                                    <button class="btn btn-default" type="button" onclick="refresh_result()">Search</button>
                                 </span>
                             </div><!-- /input-group -->
                         </div><!-- /.col-lg-6 -->
@@ -118,7 +156,7 @@ $(function(){
                                         <a tabindex="-1" href="#">排序</a>
                                         <ul class="dropdown-menu" id="sort-selector">
                                             <li><a>价格从低到高</a></li>
-                                            <li><a>价格从高到高</a></li>
+                                            <li><a>价格从高到低</a></li>
                                             <li><a>使用面积从小到大</a></li>
                                             <li><a>使用面积从大到小</a></li>
                                         </ul>
@@ -169,19 +207,7 @@ $(function(){
                 </div>
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-xs-12">
-                            <div class="list-group">
-                                <a class="list-group-item">
-                                    <h5 class="list-group-item-heading">List group item heading</h5>
-                                    <p class="list-group-item-text">asdfsadf</p>
-                                </a>
-                            </div>
-                            <div class="list-group">
-                                <a class="list-group-item">
-                                    <h5 class="list-group-item-heading">List group item heading</h5>
-                                    <p class="list-group-item-text">...</p>
-                                </a>
-                            </div>
+                        <div class="col-xs-12" id="result_container">
 
                         </div>
                     </div>
