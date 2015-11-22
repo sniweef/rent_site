@@ -18,90 +18,91 @@
         </script>
     </head>
     <body>
-        <div class="panel panel-default">
-            <div class="panel-heading">	
-                {% include "navigation.html" %}
-            </div>
-            <div class="panel-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-xs-12">
-                <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
-                    <div class="input-group">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {% include "navigation.html" %}
+        </div>
+        <div class="panel-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
+                            <div class="input-group">
                         <span class="input-group-addon ">
                             <input type="checkbox" aria-label="..." class="rent_or_by">
-                            <span>rent</span>
+                            <span>承租</span>
                         </span>
                         <span class="input-group-addon">
                             <input type="checkbox" aria-label="..." class="rent_or_by">
-                            <span>buy</span>
+                            <span>购买</span>
                         </span>
-                        <span>  </span>
+                                <span>  </span>
                         <span class="input-group-addon">
                             <input type="checkbox" aria-label="..." class="wanter_type">
-                            <span>p</span>
-                        </span>
-                        <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type">
-                            <span>s</span>
+                            <span>个人</span>
                         </span>
                         <span class="input-group-addon">
                             <input type="checkbox" aria-label="..." class="wanter_type">
-                            <span>company</span>
+                            <span>加盟商</span>
                         </span>
-                    </div><!-- /input-group -->
-                    <div class="input-group">
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a >Action</a></li>
-                                <li><a >Another action</a></li>
-                                <li><a >Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a >Separated link</a></li>
-                            </ul>
-                        </div>
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a >Action</a></li>
-                                <li><a >Another action</a></li>
-                                <li><a >Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a >Separated link</a></li>
-                            </ul>
-                        </div>
-                        <span class="input-group-addon">name</span>
-                        <input type="text" class="form-control" aria-label="...">
+                        <span class="input-group-addon">
+                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <span>公司</span>
+                        </span>
+                            </div><!-- /input-group -->
+                            <div class="input-group">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">意向类型<span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-left">
+                                        <li><a >购物中心</a></li>
+                                        <li><a >步行街</a></li>
+                                        <li><a >星级酒店</a></li>
+                                        <li><a >社区商业</a></li>
+                                    </ul>
+                                </div>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">经营类型<span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a >零售</a></li>
+                                        <li><a >专卖</a></li>
+                                        <li><a >餐饮</a></li>
+                                        <li><a >娱乐</a></li>
+                                        <li><a >生活服务</a></li>
+                                        <li><a >银行</a></li>
+                                        <li><a >金融</a></li>
+                                    </ul>
+                                </div>
+                                <span class="input-group-addon">品牌名称</span>
+                                <input type="text" class="form-control" aria-label="...">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">使用面积</span>
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                                <span class="input-group-addon" id="basic-addon2">意向价格</span>
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">工程需求</span>
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">联系人</span>
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            </div>
+                            <div class="input-group">
+                                <span class="input-group-addon" id="basic-addon2">联系方式</span>
+                                <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            </div>
+                            <p class="bg-danger"></p>
+                            <button type="button" class="btn btn-primary">提交</button>
+                        </form>
                     </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">a</span>
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
-                        <span class="input-group-addon" id="basic-addon2">a</span>
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                        <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                        <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                    </div>
-                    <p class="bg-danger"></p>
-                    <button type="button" class="btn btn-primary">Primary</button>
-                </form>
-                        </div>
-                    </div>
-                    </div>
+                </div>
             </div>
         </div>
+    </div>
 
     </body>
 </html>

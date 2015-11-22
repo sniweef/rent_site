@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang='zh-CN'>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    {% include 'include_files.html' %}
-    <script type='text/javascript'>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        {% include 'include_files.html' %}
+
+        <script type='text/javascript'>
         function add_shop(btn_obj) {
             var shop_panel = $(btn_obj).closest('.panel');
             var shop_panel_clone = shop_panel.clone();
@@ -49,170 +50,121 @@ function upload_file(upload_idx) {
    });
    });*/
         </script>
-</head>
-<body>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        {% include "navigation.html" %}
-    </div>
-    <div class="panel-body">
-        <div class="container-fluid">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xs-12">
-                    <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
-                        <label class='cus-label'>asdf</label><br>
-                        <span>asdf</span>
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-heading">			
+                {% include "navigation.html" %}
+            </div>
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12">
+                <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
+                    <label class='cus-label'>项目概念图</label><br>
+                    <span>选择上传，格式为JPG、PNG、JPEG、BMP</span>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Select file..." disabled>
-                            <span class="input-group-btn">
-                                <span class="btn btn-default btn-file">
-                                    Browse<input type="file" multiple>
-                                </span>
-                                <button class="btn btn-default" type="button" onclick="upload_file(1)">Go!</button>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Select file..." disabled>
+                        <span class="input-group-btn">
+                            <span class="btn btn-default btn-file">
+                                Browse<input type="file" multiple>
                             </span>
-                        </div>
-                            </div>
-                        </div>
+                            <button class="btn btn-default" type="button" onclick="upload_file(1)">Upload</button>
+                        </span>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-xs-12">
-                        <div class="list-group top-pad-5">
-                            <a href="#" class="list-group-item">
-                                Cras justo odio
-                            </a>
-                            <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                            <a href="#" class="list-group-item">Morbi leo risus</a>
-                        </div>
-                            </div>
-                        </div>
-                        <label class='cus-label'>asdf</label><br>
-                        <span>asdf</span>
-                                <div class="row">
-                                    <div class="col-xs-12">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Select file..." disabled>
+                    <!--
+                    <div class="list-group top-pad-5">
+                        <a href="#" class="list-group-item">
+                            Cras justo odio
+                        </a>
+                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                    </div>
+                    -->
+                    <label class='cus-label'>招商手册/宣传手册</label><br>
+                    <span>选择上传，格式为PPT、MP4、WMV</span>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Select file..." disabled>
                         <span class="input-group-btn">
                             <span class="btn btn-default btn-file">Browse<input type="file" multiple></span>
-                            <button class="btn btn-default" type="button" onclick="upload_file(2)">Go!</button>
+                            <button class="btn btn-default" type="button" onclick="upload_file(2)">Upload</button>
                         </span>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">项目名称</span>
+                        <input type="text" class="form-control" aria-label="...">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">类别 <span class="caret"></span></button>
+                            <ul class="dropdown-menu dropdown-menu-right">
+                                <li><a >购物中心</a></li>
+                                <li><a >步行街</a></li>
+                                <li><a >星级酒店</a></li>
+                                <li><a >社区商业</a></li>
+                            </ul>
                         </div>
-                                    </div>
-                                </div>
-                                        <div class="row">
-                                            <div class="col-xs-12">
+                    </div>
+                    <!--
                         <div class="input-group">
-                            <span class="input-group-addon">name</span>
-                            <input type="text" class="form-control" aria-label="...">
-                            <div class="input-group-btn">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                                <ul class="dropdown-menu dropdown-menu-right">
-                                    <li><a >Action</a></li>
-                                    <li><a >Another action</a></li>
-                                    <li><a >Something else here</a></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><a >Separated link</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                                            </div>
-                                        </div>
-                        <!--
-                            <div class="input-group">
-                            <span class="input-group-addon">name</span>
-                            <input class="form-control" aria-label="Amount (to the nearest dollar)" type="text">
-                            <span class="input-group-addon">.00</span>
-                            </div>-->
-                                                <div class="row">
-                                                    <div class="col-xs-12">
+                        <span class="input-group-addon">name</span>
+                        <input class="form-control" aria-label="Amount (to the nearest dollar)" type="text">
+                        <span class="input-group-addon">.00</span>
+                        </div>-->
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <span class="input-group-addon" id="basic-addon2">定位</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
                         </div>
-                                                    </div>
-                                                </div>
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <span class="input-group-addon" id="basic-addon2">地址</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
                         </div>
-                                                            </div>
-                                                        </div>
-                                                                <div class="row">
-                                                                    <div class="col-xs-12">
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <span class="input-group-addon" id="basic-addon2">联系人</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
                         </div>
-                                                                    </div>
-                                                                </div>
-                                                                        <div class="row">
-                                                                            <div class="col-xs-12">
                         <div class="input-group">
-                            <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                            <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                            <span class="input-group-addon" id="basic-addon2">联系方式</span>
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
                         </div>
-                                                                            </div>
-                                                                        </div>
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                <span>new</span>
+                                <span>铺位信息</span>
                                 <div class="pull-right">
-                                    <button type="button" class="btn btn-default btn-xs" onclick="add_shop(this)">Add</button>
-                                    <button type="button" class="btn btn-default btn-xs" onclick="del_shop(this)">Delete</button>
+                                    <button type="button" class="btn btn-default btn-xs" onclick="add_shop(this)">添加</button>
+                                    <button type="button" class="btn btn-default btn-xs" onclick="del_shop(this)">删除</button>
                                 </div>
                             </div>
                             <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-xs-12">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">a</span>
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">铺位号</span>
+                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
 
-                                    <span class="input-group-addon" id="basic-addon2">a</span>
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                                    <span class="input-group-addon" id="basic-addon2">使用面积</span>
+                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
                                 </div>
-                                    </div>
-                                </div>
-                                        <div class="row">
-                                            <div class="col-xs-12">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">a</span>
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
-                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                                    <span class="input-group-addon" id="basic-addon2">租金/售价</span>
+                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
                                 </div>
-                                            </div>
-                                        </div>
-                                                <div class="row">
-                                                    <div class="col-xs-12">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">工程条件</span>
+                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
                                 </div>
-                                                    </div>
-                                                </div>
-                                                        <div class="row">
-                                                            <div class="col-xs-12">
                                 <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">@example.com</span>
-                                    <input type="text" class="form-control" placeholder="Recipient's username" aria-describedby="basic-addon2">
+                                    <span class="input-group-addon" id="basic-addon2">其它</span>
+                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
                                 </div>
-                                                            </div>
-                                                        </div>
                             </div>
                         </div>
                         <p class="bg-danger"></p>
-                        <button type="button" class="btn btn-primary">Primary</button>
-                    </form>
+                        <button type="button" class="btn btn-primary">提交</button>
+                </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
             </div>
         </div>
 

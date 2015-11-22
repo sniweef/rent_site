@@ -7,5 +7,134 @@
 </head>
 <body>
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {% include "navigation.html" %}
+    </div>
+
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">Go!</button>
+                                </span>
+                    </div><!-- /input-group -->
+                </div><!-- /.col-lg-6 -->
+            </div><!-- /.row -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            省市 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="city-selector">
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            面积 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="area-selector">
+                            <li><a>100m<sup>2</sup>以下</a></li>
+                            <li><a>100m - 500m<sup>2</sup></a></li>
+                            <li><a>500m - 1000m<sup>2</sup></a></li>
+                            <li><a>1000m<sup>2</sup>以上</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            价格 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="price-selector">
+                            <li><a>50元/m<sup>2</sup>以下</a></li>
+                            <li><a>50 - 300元/m<sup>2</sup></a></li>
+                            <li><a>300 - 800元/m<sup>2</sup></a></li>
+                            <li><a>800 - 1500元/m<sup>2</sup></a></li>
+                            <li><a>1500元/m<sup>2</sup>以上</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            更多<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-submenu pull-left">
+                                <a tabindex="-1" href="#">排序</a>
+                                <ul class="dropdown-menu" id="sort-selector">
+                                    <li><a>价格从低到高</a></li>
+                                    <li><a>价格从高到高</a></li>
+                                    <li><a>使用面积从小到大</a></li>
+                                    <li><a>使用面积从大到小</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown-submenu pull-left">
+                                <a tabindex="-1" href="#">招商对象</a>
+                                <ul class="dropdown-menu" id="invest-selector">
+                                    <li><a>百货超市</a></li>
+                                    <li><a>零售餐饮</a></li>
+                                    <li><a>娱乐休闲</a></li>
+                                    <li><a>银行金融</a></li>
+                                    <li><a>专业服务</a></li>
+                                    <li><a>其它</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                    <!--
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        排序<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                        <li><a>价格从低到高</a></li>
+                        <li><a>价格从高到高</a></li>
+                        <li><a>使用面积从小到大</a></li>
+                        <li><a>使用面积从大到小</a></li>
+                        </ul>
+                        </div>
+                        <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        招商对象 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                        <li><a>百货超市</a></li>
+                        <li><a>零售餐饮</a></li>
+                        <li><a>娱乐休闲</a></li>
+                        <li><a>银行金融</a></li>
+                        <li><a>专业服务</a></li>
+                        <li><a>其它</a></li>
+                        </ul>
+                        </div>
+                    -->
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="list-group">
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading">List group item heading</h5>
+                            <p class="list-group-item-text">asdfsadf</p>
+                        </a>
+                    </div>
+                    <div class="list-group">
+                        <a class="list-group-item">
+                            <h5 class="list-group-item-heading">List group item heading</h5>
+                            <p class="list-group-item-text">...</p>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

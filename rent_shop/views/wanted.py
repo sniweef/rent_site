@@ -47,6 +47,10 @@ def search_wanted():
         only('id', 'is_buy', 'wanter_type', 'intention_type', 'business_type', 'brand_name', 'area').\
         skip(from_idx).limit(10)
 
+    show_html = request.args.get('html', '')
+    if show_html:
+        return render_template('wanted_project.html')
+
     return query_result.to_json()
 
 
