@@ -1,0 +1,23 @@
+{% macro print_array(array, prefix='') %}
+<p class="list-group-item-text">
+    {{ prefix }} :
+    {% for ele in array %}
+    {{ ele }},
+    {% endfor %}
+</p>
+{% endmacro %}
+
+{% for shop in shop_list %}
+<div class="list-group">
+    <a class="list-group-item" href="/rent/view/{{ shop.id }}?html=1">
+        <h5 class="list-group-item-heading">[需求]</h5>
+        <p class="list-group-item-text">发布类别：{% if shop.is_buy %}购买{% else %}承租{% endif %} </p>
+        <p class="list-group-item-text">营运类别：{{ shop.wanter_type }}</p>
+        <p class="list-group-item-text">意向类别：{{ shop.intention_type }}</p>
+        <p class="list-group-item-text">经营类型：{{ shop.business_type }}</p>
+        {% if shop.brand_name %}
+        <p class="list-group-item-text">品牌名称：{{ shop.brand_name }}</p>
+        {% endif %}
+    </a>
+</div>
+{% endfor %}

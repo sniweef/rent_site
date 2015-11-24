@@ -17,7 +17,9 @@
         <h5 class="list-group-item-heading">[{{ pro_type_to_str(shop.project_type) }}]</h5>
         <p class="list-group-item-text">项目名称：{{ shop.project_name }}</p>
         <p class="list-group-item-text">地址：{{ shop.address }}</p>
+        {% if shop.shops_price %}
         {{ print_array(shop.shops_price, '价格') }}
+        {% endif %}
         {{ print_array(shop.shops_area, '使用面积') }}
         {{ print_array(shop.shops_investment, '招商对象') }}
     </a>

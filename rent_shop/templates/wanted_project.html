@@ -19,7 +19,9 @@
                 }
         }
 
-function city_filter(city_idx) {
+function is_buy_filter(idx) {
+    var idx_val_map = [1, 0];
+    replace_arg('is_buy', idx_val_map[idx]);
 }
 function area_filter(area_idx) {
     var idx_val_map = [
@@ -28,22 +30,27 @@ function area_filter(area_idx) {
         [500, 1000],
         [1000, 0]
     ];
-        replace_arg('min_area', idx_val_map[area_idx][0]);
-        replace_arg('max_area', idx_val_map[area_idx][1]);
+    replace_arg('min_area', idx_val_map[area_idx][0]);
+    replace_arg('max_area', idx_val_map[area_idx][1]);
 }
-function price_filter(price_idx) {
+function wanter_filter(idx) {
+    var idx_val_map = ['个人', '加盟商', '公司直营'];
+    replace_arg('wanter', idx_val_map[idx]);
 }
-function sort_filter(sort_idx) {
-
+function intention_filter(idx) {
+    var idx_val_map = ['购物中心', '步行街', '星级酒店', '社区商业'];
+    replace_arg('intention', idx_val_map[idx]);
 }
-function invest_filter(invest_idx) {
+function business_filter(idx) {
+    var idx_val_map = ['零售', '专卖', '餐饮', '娱乐', '生活服务', '银行', '金融'];
+    replace_arg('intention', idx_val_map[idx]);
 }
 var selector_func_map = {
-    'city-selector': city_filter,
+    'is-buy-selector': is_buy_filter,
     'area-selector': area_filter,
-    'price-selector': price_filter,
-    'sort-selector': sort_filter,
-    'invest-selector': invest_filter,
+    'wanter-selector': wanter_filter,
+    'intention-selector': intention_filter,
+    'business-selector': business_filter,
 };
 
 function li_selected() {
@@ -54,8 +61,19 @@ function li_selected() {
         $(this).closest('ul').prev().text($(this).text());
     }
 }
+function refresh_result() {
+    console.log(g_get_args);
+    var url = "/wanted/search?html=1&key=" + $('#search_key').val() + '&' + g_get_args;
+    console.log(url);
+    $.get(url, function(result) {
+        $('#result_container').html(result);
+    });
+}
 $(function(){
     $('li').click(li_selected);
+    $.get("/wanted/search?html=1", function(result){
+        $("#result_container").html(result);
+  });
 });
         </script>
 </head>
@@ -71,9 +89,9 @@ $(function(){
             <div class="row">
                 <div class="col-xs-12">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
+                        <input type="text" class="form-control" placeholder="Search for..." id="search_key">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">Go!</button>
+                                    <button class="btn btn-default" type="button" onclick="refresh_result()">Search</button>
                                 </span>
                     </div><!-- /input-group -->
                 </div><!-- /.col-lg-6 -->
@@ -84,14 +102,14 @@ $(function(){
                         <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             省市 <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" id="city-selector">
+                        <ul class="dropdown-menu" id="is-buy-selector">
                         </ul>
                     </div>
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             意向 <span class="caret"></span>
                         </button>
-                        <ul class="dropdown-menu" id="area-selector">
+                        <ul class="dropdown-menu" id="is-buy-selector">
                             <li><a>购买</a></li>
                             <li><a>承租</a></li>
                         </ul>
@@ -115,7 +133,7 @@ $(function(){
                         <ul class="dropdown-menu">
                             <li class="dropdown-submenu pull-left">
                                 <a tabindex="-1" href="#">营运</a>
-                                <ul class="dropdown-menu" id="sort-selector">
+                                <ul class="dropdown-menu" id="wanter-selector">
                                     <li><a>个人	</a></li>
                                     <li><a>加盟商</a></li>
                                     <li><a>公司直营</a></li>
@@ -123,7 +141,7 @@ $(function(){
                             </li>
                             <li class="dropdown-submenu pull-left">
                                 <a tabindex="-1" href="#">目标</a>
-                                <ul class="dropdown-menu" id="invest-selector">
+                                <ul class="dropdown-menu" id="intention-selector">
                                     <li><a>购物中心</a></li>
                                     <li><a>步行街</a></li>
                                     <li><a>星级酒店</a></li>
@@ -132,7 +150,7 @@ $(function(){
                             </li>
 			　　　　<li class="dropdown-submenu pull-left">
                                 <a tabindex="-1" href="#">经营</a>
-                                <ul class="dropdown-menu" id="invest-selector">
+                                <ul class="dropdown-menu" id="business-selector">
                                     <li><a>零售</a></li>
                                     <li><a>专卖</a></li>
                                     <li><a>餐饮</a></li>
@@ -176,19 +194,7 @@ $(function(){
         </div>
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="list-group">
-                        <a class="list-group-item">
-                            <h5 class="list-group-item-heading">List group item heading</h5>
-                            <p class="list-group-item-text">asdfsadf</p>
-                        </a>
-                    </div>
-                    <div class="list-group">
-                        <a class="list-group-item">
-                            <h5 class="list-group-item-heading">List group item heading</h5>
-                            <p class="list-group-item-text">...</p>
-                        </a>
-                    </div>
+                <div class="col-xs-12" id="result_container">
 
                 </div>
             </div>

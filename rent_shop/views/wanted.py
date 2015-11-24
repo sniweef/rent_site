@@ -45,13 +45,13 @@ def search_wanted():
 
     query_result = WantedShop.objects(q_expr).order_by('-id').\
         only('id', 'is_buy', 'wanter_type', 'intention_type', 'business_type', 'brand_name', 'area').\
-        skip(from_idx).limit(10)
+        skip(from_idx)
 
     show_html = request.args.get('html', '')
     if show_html:
-        return render_template('wanted_project.html')
+        return render_template('search_wanted_result.html', shop_list=query_result)
 
-    return query_result.to_json()
+    return query_result.limit(10).to_json()
 
 
 @wanted.route('/view/<wanted_shop_id>')
@@ -116,10 +116,12 @@ def delete_wanted(wanted_shop_id):
 def approve_wanted(wanted_shop_id):
     try:
         wanted_shop = WantedShop.objects(id=wanted_shop_id).first()
+        print wanted_shop, wanted_shop.id
         wanted_shop.is_approved = True
         wanted_shop.save()
         return 'OK'
-    except (ValidationError, AttributeError):
+    except (ValidationError, AttributeError), e:
+        print e
         abort(404)
 
 
@@ -132,3 +134,9 @@ def manage_rent():
 
     if request.method == 'GET':
         return render_template('manage.html', obj_list=obj_list, prefix='wanted')
+
+
+@wanted.route('/search_controller')
+def search_controller():
+    if request.method == 'GET':
+        return render_template('wanted_project.html')
