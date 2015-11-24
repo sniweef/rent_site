@@ -9,7 +9,7 @@
 
 {% for shop in shop_list %}
 <div class="list-group">
-    <a class="list-group-item" href="/rent/view/{{ shop.id }}?html=1">
+    <a class="list-group-item" href="/wanted/view/{{ shop.id }}?html=1">
         <h5 class="list-group-item-heading">[需求]</h5>
         <p class="list-group-item-text">发布类别：{% if shop.is_buy %}购买{% else %}承租{% endif %} </p>
         <p class="list-group-item-text">营运类别：{{ shop.wanter_type }}</p>
