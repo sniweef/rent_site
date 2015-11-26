@@ -228,3 +228,7 @@ id：当前招租帖子的ID字符串，如上面例子里提到的 字符串：
 - business_type：经营类型。
 - brand_name：品牌名称。
 - area：意向面积。
+
+###4. 项目相关
+在git clone下来之后需要创建目录instance，并在其下创建文件__init__.py/config.py，其中config.py需要配置参数:
+> DB_USER DB_PWD PIC_SERVER_IP PIC_SERVER_PORT SHOP_PICS_ROOT_DIR 
