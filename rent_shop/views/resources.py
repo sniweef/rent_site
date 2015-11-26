@@ -2,7 +2,8 @@ import os
 import json
 from flask import Blueprint, request, abort, send_file
 from bson.objectid import ObjectId
-from config import SHOP_PICS_ROOT_DIR, PIC_SERVER_IP, PIC_SERVER_PORT
+from config import SHOP_PICS_ROOT_DIR, PIC_SERVER_PORT
+from instance.config import PIC_SERVER_IP
 
 __author__ = 'hzhigeng'
 
