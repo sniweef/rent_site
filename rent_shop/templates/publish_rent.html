@@ -1,3 +1,46 @@
+{% macro pro_type_to_str(pro_type) %}
+{% set pro_type_strs = ['购物中心', '步行街', '星级酒店', '社区商业'] %}
+{{ pro_type_strs[pro_type] }}
+{% endmacro %}
+{% macro print_shop(shop) %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span>铺位信息</span>
+        <div class="pull-right">
+            <button type="button" class="btn btn-default btn-xs" onclick="add_shop(this)">添加</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="del_shop(this)">删除</button>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon2">铺位号</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                    value="{{ shop.shop_number if shop }}">
+
+            <span class="input-group-addon" id="basic-addon2"">使用面积</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                   value="{{ shop.area if shop }}">
+            <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon2">租金/售价</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                    value="{{ shop.price if shop }}">
+            <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon2">工程条件</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                    value="{{ shop.project_condition if shop }}">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon2">其它</span>
+            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                    value="{{ shop.others if shop }}">
+        </div>
+    </div>
+</div>
+{% endmacro %}
 <!DOCTYPE html>
 <html lang='zh-CN'>
     <head>
@@ -62,6 +105,7 @@ function upload_file(upload_idx) {
                         <div class="col-xs-12">
                 <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
                     <label class='cus-label'>项目概念图</label><br>
+                    {% if editable %}
                     <span>选择上传，格式为JPG、PNG、JPEG、BMP</span>
 
                     <div class="input-group">
@@ -73,17 +117,17 @@ function upload_file(upload_idx) {
                             <button class="btn btn-default" type="button" onclick="upload_file(1)">Upload</button>
                         </span>
                     </div>
-
-                    <!--
+                    {% endif %}
+                    {% if rent_project %}
                     <div class="list-group top-pad-5">
-                        <a href="#" class="list-group-item">
-                            Cras justo odio
-                        </a>
-                        <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-                        <a href="#" class="list-group-item">Morbi leo risus</a>
+                        {% for picture in rent_project.pictures %}
+                        <a href="{{ picture }}" class="list-group-item">{{ picture }}</a>
+                        {% endfor %}
                     </div>
-                    -->
+                    {% endif %}
+
                     <label class='cus-label'>招商手册/宣传手册</label><br>
+                    {% if editable %}
                     <span>选择上传，格式为PPT、MP4、WMV</span>
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Select file..." disabled>
@@ -92,11 +136,18 @@ function upload_file(upload_idx) {
                             <button class="btn btn-default" type="button" onclick="upload_file(2)">Upload</button>
                         </span>
                     </div>
+                    {% endif %}
+                    {% if rent_project %}
+                    <div class="list-group top-pad-5">
+                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure }}</a>
+                    </div>
+                    {% endif %}
                     <div class="input-group">
                         <span class="input-group-addon">项目名称</span>
-                        <input type="text" class="form-control" aria-label="...">
+                        <input type="text" class="form-control" aria-label="..." value="{{ rent_project.project_name if rent_project }}">
                         <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">类别 <span class="caret"></span></button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if rent_project %} {{ pro_type_to_str(rent_project.project_type) }} {% else %}类别{% endif %} <span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a >购物中心</a></li>
                                 <li><a >步行街</a></li>
@@ -113,54 +164,36 @@ function upload_file(upload_idx) {
                         </div>-->
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">定位</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                                    value="{{ rent_project.position if rent_project }}">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">地址</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                                    value="{{ rent_project.address if rent_project }}">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">联系人</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                                    value="{{ rent_project.contacter if rent_project }}">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">联系方式</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                                value="{{ rent_project.phone if rent_project }}">
                         </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <span>铺位信息</span>
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-default btn-xs" onclick="add_shop(this)">添加</button>
-                                    <button type="button" class="btn btn-default btn-xs" onclick="del_shop(this)">删除</button>
-                                </div>
-                            </div>
-                            <div class="panel-body">
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">铺位号</span>
-                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
 
-                                    <span class="input-group-addon" id="basic-addon2">使用面积</span>
-                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
-                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">租金/售价</span>
-                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
-                                    <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>					
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">工程条件</span>
-                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
-                                </div>
-                                <div class="input-group">
-                                    <span class="input-group-addon" id="basic-addon2">其它</span>
-                                    <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
-                                </div>
-                            </div>
-                        </div>
+                        {% if editable %}
+                        {{ print_shop() }}
+                        {% else %}
+                        {% for shop in rent_project.shops_info %}
+                        {{ print_shop(shop) }}
+                        {% endfor %}
+                        {% endif %}
                         <p class="bg-danger"></p>
+                        {% if editable %}
                         <button type="button" class="btn btn-primary">提交</button>
+                        {% endif %}
                 </form>
                         </div>
                     </div>

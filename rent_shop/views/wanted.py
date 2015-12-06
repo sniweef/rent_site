@@ -56,8 +56,13 @@ def search_wanted():
 
 @wanted.route('/view/<wanted_shop_id>')
 def view_wanted(wanted_shop_id):
+    as_html = request.args.get('html', '')
+
     try:
-        return WantedShop.objects(id=wanted_shop_id).first().to_json()
+        wanted_obj = WantedShop.objects(id=wanted_shop_id).first()
+        if as_html:
+            return render_template('publish_wanted.html', wanted_shop=wanted_obj, editable=False)
+        return wanted_obj.to_json()
     except (ValidationError, AttributeError):
         return '{}'
 

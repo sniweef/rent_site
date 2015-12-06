@@ -82,8 +82,12 @@ def search_rent():
 
 @rent.route('/view/<rent_project_id>')
 def view_rent(rent_project_id):
+    as_html = request.args.get('html', '')
     try:
-        return RentProject.objects(id=rent_project_id).first().to_json()
+        rent_project = RentProject.objects(id=rent_project_id).first()
+        if as_html:
+            return render_template('publish_rent.html', rent_project=rent_project, editable=False)
+        return rent_project.to_json()
     except (ValidationError, AttributeError):
         return '{}'
 
@@ -98,7 +102,7 @@ def get_or_create_user(form):
 @rent.route('/publish', methods=['GET', 'POST'])
 def publish_rent():
     if request.method == 'GET':
-        return render_template('publish_rent.html')
+        return render_template('publish_rent.html', editable=True)
 
     form = PublishRentForm(request.form)
     #print form
