@@ -6,10 +6,12 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         <span>铺位信息</span>
+        {% if editable %}
         <div class="pull-right">
             <button type="button" class="btn btn-default btn-xs" onclick="add_shop(this)">添加</button>
             <button type="button" class="btn btn-default btn-xs" onclick="del_shop(this)">删除</button>
         </div>
+        {% endif %}
     </div>
     <div class="panel-body">
         <div class="input-group">

@@ -74,9 +74,13 @@ function invest_filter(invest_idx) {
 
 function li_selected() {
     var parent_id = $(this).parent().attr('id');
+    console.log(parent_id);
     if (parent_id in selector_func_map)
     {
         selector_func_map[parent_id]($(this).index());
+        console.log($(this).closest('ul'));
+        console.log($(this).closest('ul').prev().prev());
+        console.log($(this).text());
         $(this).closest('ul').prev().text($(this).text());
     }
 }
