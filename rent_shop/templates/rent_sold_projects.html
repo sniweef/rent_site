@@ -78,10 +78,8 @@ function li_selected() {
     if (parent_id in selector_func_map)
     {
         selector_func_map[parent_id]($(this).index());
-        console.log($(this).closest('ul'));
-        console.log($(this).closest('ul').prev().prev());
-        console.log($(this).text());
         $(this).closest('ul').prev().text($(this).text());
+        $(this).closest('ul').prev().prev().text($(this).text());
     }
 }
 function refresh_result() {
