@@ -14,6 +14,14 @@
                     $('.'+class_name).prop('checked', false);
                     $(this).prop('checked', true);
                 });
+                {% if wanted_shop %}
+                var type_id_map = {
+                    '个人': 'personal',
+                    '加盟商': 'franchisee',
+                    '公司': 'company'
+                };
+                $('#'+type_id_map['{{ wanted_shop.wanter_type }}']).prop('checked', true);
+                {% endif %}
             });
         </script>
     </head>
@@ -29,30 +37,31 @@
                         <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
                             <div class="input-group">
                         <span class="input-group-addon ">
-                            <input type="checkbox" aria-label="..." class="rent_or_by">
+                            <input type="checkbox" aria-label="..." class="rent_or_by" {% if wanted_shop and not wanted_shop.is_buy %}checked="checked" {% endif %}>
                             <span>承租</span>
                         </span>
                         <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="rent_or_by">
+                            <input type="checkbox" aria-label="..." class="rent_or_by" {% if wanted_shop and wanted_shop.is_buy %}checked="checked" {% endif %}>
                             <span>购买</span>
                         </span>
                                 <span>  </span>
                         <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <input type="checkbox" aria-label="..." class="wanter_type" id="personal">
                             <span>个人</span>
                         </span>
                         <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <input type="checkbox" aria-label="..." class="wanter_type" id="franchisee">
                             <span>加盟商</span>
                         </span>
                         <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type">
+                            <input type="checkbox" aria-label="..." class="wanter_type" id="company">
                             <span>公司</span>
                         </span>
                             </div><!-- /input-group -->
                             <div class="input-group">
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">意向类型<span class="caret"></span></button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {% if wanted_shop %} {{ wanted_shop.intention_type }} {% else %}意向类型{% endif %}<span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-left">
                                         <li><a >购物中心</a></li>
                                         <li><a >步行街</a></li>
@@ -61,7 +70,8 @@
                                     </ul>
                                 </div>
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">经营类型<span class="caret"></span></button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        {% if wanted_shop %} {{ wanted_shop.business_type }} {% else %}经营类型{% endif %}<span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li><a >零售</a></li>
                                         <li><a >专卖</a></li>
@@ -73,23 +83,25 @@
                                     </ul>
                                 </div>
                                 <span class="input-group-addon">品牌名称</span>
-                                <input type="text" class="form-control" aria-label="...">
+                                <input type="text" class="form-control" aria-label="..." value="{{ wanted_shop.brand_name if wanted_shop }}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">使用面积</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.area if wanted_shop }}">
                                 <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                            </div>
+                            <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">意向价格</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.intention_price if wanted_shop }}">
                                 <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">工程需求</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.project_demand if wanted_shop }}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系人</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.contacter if wanted_shop }}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系方式</span>

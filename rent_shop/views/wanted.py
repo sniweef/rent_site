@@ -70,7 +70,7 @@ def view_wanted(wanted_shop_id):
 @wanted.route('/publish', methods=['GET', 'POST'])
 def publish_wanted():
     if request.method == 'GET':
-        return render_template('publish_wanted.html')
+        return render_template('publish_wanted.html', editable=True)
 
     form = PublishWantedForm(request.form)
     if form.validate():
