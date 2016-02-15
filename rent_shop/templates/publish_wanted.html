@@ -6,7 +6,7 @@
         <script type='text/javascript'>
             $(function() {
                 $('a').click(function() {
-                    $(this).closest('ul').prev().text($(this).text());
+                    $(this).closest('ul').prev().prev().text($(this).text());
                 });
                 $(':checkbox').click(function() {
                     //alert($(this).attr('class'));
@@ -23,6 +23,42 @@
                 $('#'+type_id_map['{{ wanted_shop.wanter_type }}']).prop('checked', true);
                 {% endif %}
             });
+            function publish_want() {
+                console.log($('#upload_form :input'));
+                console.log($('#upload_form input'));
+                console.log($('#upload_form').serializeArray());
+                var form_data = new FormData();
+                var is_buy = 0;
+                if ($('#buy_cb').prop('checked'))
+                {
+                    is_buy = 1;
+                }
+                form_data.append('is_buy', is_buy);
+                form_data.append('business_type', is_buy);
+                $.ajax({
+                    type:'POST',
+                    url:'/wanted/publish',
+                    data:form_data,
+                    /**
+                     *必须false才会自动加上正确的Content-Type
+                     */
+                    contentType:false,
+                    /**
+                     * 必须false才会避开jQuery对 formdata 的默认处理
+                     * XMLHttpRequest会对 formdata 进行正确的处理
+                     */
+                    processData:false,
+                    error: function(jqxhr, text_status, error_thrown) {
+                        console.log(text_status, error_thrown);
+                        console.log(jqxhr.responseText);
+                        $('.bg-danger').text(jqxhr.responseText);
+                    },
+                    success: function(data, text_status, jqxhr) {
+                    }
+                });
+                //$('#upload_form').submit();
+            }
+
         </script>
     </head>
     <body>
@@ -34,14 +70,14 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xs-12">
-                        <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form">
+                        <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form" id="upload_form">
                             <div class="input-group">
                         <span class="input-group-addon ">
-                            <input type="checkbox" aria-label="..." class="rent_or_by" {% if wanted_shop and not wanted_shop.is_buy %}checked="checked" {% endif %}>
+                            <input type="checkbox" aria-label="..." class="rent_or_buy" value="0" {% if wanted_shop and not wanted_shop.is_buy %}checked="checked" {% endif %}>
                             <span>承租</span>
                         </span>
                         <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="rent_or_by" {% if wanted_shop and wanted_shop.is_buy %}checked="checked" {% endif %}>
+                            <input type="checkbox" aria-label="..." class="rent_or_buy" id="buy_cb" value="1" {% if wanted_shop and wanted_shop.is_buy %}checked="checked" {% endif %}>
                             <span>购买</span>
                         </span>
                                 <span>  </span>
@@ -110,7 +146,7 @@
                             </div>
                             <p class="bg-danger"></p>
                             {% if editable %}
-                            <button type="button" class="btn btn-primary">提交</button>
+                            <button type="button" class="btn btn-primary" onclick="publish_want()">提交</button>
                             {% endif %}
                         </form>
                     </div>
