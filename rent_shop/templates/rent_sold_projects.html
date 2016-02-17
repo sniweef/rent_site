@@ -79,7 +79,7 @@ function li_selected() {
     {
         selector_func_map[parent_id]($(this).index());
         $(this).closest('ul').prev().text($(this).text());
-        //$(this).closest('ul').prev().prev().text($(this).text());
+        $(this).closest('ul').prev().prev().text($(this).text());
     }
 }
 function refresh_result() {

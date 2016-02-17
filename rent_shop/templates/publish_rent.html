@@ -68,6 +68,7 @@ function del_shop(btn_obj) {
 $(function() {
     $('a').click(function() {
         $(this).closest('ul').prev().text($(this).text());
+        $(this).closest('ul').prev().prev().text($(this).text());
     })
 });
 $(document).on('change', '.btn-file :file', function() {

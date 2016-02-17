@@ -6,7 +6,7 @@
         <script type='text/javascript'>
             $(function() {
                 $('a').click(function() {
-                    //$(this).closest('ul').prev().prev().text($(this).text());
+                    $(this).closest('ul').prev().prev().text($(this).text());
                     $(this).closest('ul').prev().text($(this).text());
                 });
                 $(':checkbox').click(function() {
