@@ -7,6 +7,7 @@
             $(function() {
                 $('a').click(function() {
                     $(this).closest('ul').prev().prev().text($(this).text());
+                    $(this).closest('ul').prev().text($(this).text());
                 });
                 $(':checkbox').click(function() {
                     //alert($(this).attr('class'));
@@ -24,9 +25,9 @@
                 {% endif %}
             });
             function publish_want() {
-                console.log($('#upload_form :input'));
+                /*console.log($('#upload_form :input'));
                 console.log($('#upload_form input'));
-                console.log($('#upload_form').serializeArray());
+                console.log($('#upload_form').serializeArray());*/
                 var form_data = new FormData();
                 var is_buy = 0;
                 if ($('#buy_cb').prop('checked'))
@@ -34,6 +35,18 @@
                     is_buy = 1;
                 }
                 form_data.append('is_buy', is_buy);
+
+                var wanter_types = $('.wanter_type');
+                var wanter_type = "个人";
+                for (i in wanter_types)
+                {
+                    if (wanter_types[i].checked)
+                    {
+                        wanter_type = $(wanter_types[i]).next().text();
+                    }
+                }
+                form_data.append('wanter_type', wanter_type);
+
                 form_data.append('business_type', is_buy);
                 $.ajax({
                     type:'POST',
@@ -56,7 +69,6 @@
                     success: function(data, text_status, jqxhr) {
                     }
                 });
-                //$('#upload_form').submit();
             }
 
         </script>
@@ -96,7 +108,7 @@
                             </div><!-- /input-group -->
                             <div class="input-group">
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" id="business_type" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {% if wanted_shop %} {{ wanted_shop.intention_type }} {% else %}意向类型{% endif %}<span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-left">
                                         <li><a >购物中心</a></li>
