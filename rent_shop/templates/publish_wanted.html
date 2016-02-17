@@ -6,7 +6,7 @@
         <script type='text/javascript'>
             $(function() {
                 $('a').click(function() {
-                    $(this).closest('ul').prev().prev().text($(this).text());
+                    //$(this).closest('ul').prev().prev().text($(this).text());
                     $(this).closest('ul').prev().text($(this).text());
                 });
                 $(':checkbox').click(function() {
@@ -24,11 +24,17 @@
                 $('#'+type_id_map['{{ wanted_shop.wanter_type }}']).prop('checked', true);
                 {% endif %}
             });
+            var g_postId = '';
             function publish_want() {
                 /*console.log($('#upload_form :input'));
                 console.log($('#upload_form input'));
                 console.log($('#upload_form').serializeArray());*/
                 var form_data = new FormData();
+                if (g_postId)
+                {
+                    form_data.append('id', g_postId);
+                }
+
                 var is_buy = 0;
                 if ($('#buy_cb').prop('checked'))
                 {
@@ -47,7 +53,22 @@
                 }
                 form_data.append('wanter_type', wanter_type);
 
-                form_data.append('business_type', is_buy);
+                var args = new Array('intention_type', 'business_type', 'brand_name', 'area', 'intention_price',
+                'project_demand', 'contacter', 'phone');
+
+                for (i in args)
+                {
+                    var value = ''
+                    value = $('#' + args[i]).text();
+                    if (!value)
+                    {
+                        value = $('#' + args[i]).val();
+                    }
+                    console.log('appends: ', args[i], value);
+                    form_data.append(args[i], value);
+                }
+                console.log(form_data);
+
                 $.ajax({
                     type:'POST',
                     url:'/wanted/publish',
@@ -67,6 +88,8 @@
                         $('.bg-danger').text(jqxhr.responseText);
                     },
                     success: function(data, text_status, jqxhr) {
+                        console.log(jqxhr.responseText);
+                        g_postId = jqxhr.responseText;
                     }
                 });
             }
@@ -108,7 +131,7 @@
                             </div><!-- /input-group -->
                             <div class="input-group">
                                 <div class="input-group-btn">
-                                    <button type="button" id="business_type" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" id="intention_type" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {% if wanted_shop %} {{ wanted_shop.intention_type }} {% else %}意向类型{% endif %}<span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-left">
                                         <li><a >购物中心</a></li>
@@ -118,7 +141,7 @@
                                     </ul>
                                 </div>
                                 <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <button type="button" id="business_type" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         {% if wanted_shop %} {{ wanted_shop.business_type }} {% else %}经营类型{% endif %}<span class="caret"></span></button>
                                     <ul class="dropdown-menu dropdown-menu-right">
                                         <li><a >零售</a></li>
@@ -131,29 +154,29 @@
                                     </ul>
                                 </div>
                                 <span class="input-group-addon">品牌名称</span>
-                                <input type="text" class="form-control" aria-label="..." value="{{ wanted_shop.brand_name if wanted_shop }}">
+                                <input id="brand_name" type="text" class="form-control" aria-label="..." value="{{ wanted_shop.brand_name if wanted_shop }}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">使用面积</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.area if wanted_shop }}">
+                                <input id="area" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.area if wanted_shop }}">
                                 <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">意向价格</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.intention_price if wanted_shop }}">
+                                <input id="intention_price" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.intention_price if wanted_shop }}">
                                 <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">工程需求</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.project_demand if wanted_shop }}">
+                                <input type="text" id="project_demand" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.project_demand if wanted_shop }}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系人</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.contacter if wanted_shop }}">
+                                <input id="contacter" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.contacter if wanted_shop }}">
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系方式</span>
-                                <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                                <input id="phone" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                         value="{{ wanted_shop.phone if wanted_shop }}">
                             </div>
                             <p class="bg-danger"></p>

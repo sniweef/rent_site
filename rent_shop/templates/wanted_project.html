@@ -43,7 +43,7 @@ function intention_filter(idx) {
 }
 function business_filter(idx) {
     var idx_val_map = ['零售', '专卖', '餐饮', '娱乐', '生活服务', '银行', '金融'];
-    replace_arg('intention', idx_val_map[idx]);
+    replace_arg('business', idx_val_map[idx]);
 }
 var selector_func_map = {
     'is-buy-selector': is_buy_filter,
@@ -128,6 +128,42 @@ $(function(){
                             <li><a>1000m<sup>2</sup>以上</a></li>
                         </ul>
                     </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            营运 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="wanter-selector">
+                            <li><a>个人</a></li>
+                            <li><a>加盟商</a></li>
+                            <li><a>公司直营</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            目标<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="intention-selector">
+                            <li><a>购物中心</a></li>
+                            <li><a>步行街</a></li>
+                            <li><a>星级酒店</a></li>
+                            <li><a>社区商业</a></li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            经营<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" id="business-selector">
+                            <li><a>零售</a></li>
+                            <li><a>专卖</a></li>
+                            <li><a>餐饮</a></li>
+                            <li><a>娱乐</a></li>
+                            <li><a>生活服务</a></li>
+                            <li><a>银行</a></li>
+                            <li><a>金融</a></li>
+                        </ul>
+                    </div>
+                    <!--
 
                     <div class="btn-group">
                         <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -165,6 +201,7 @@ $(function(){
                             </li>
                         </ul>
                     </div>
+                    -->
 
                     <!--
                         <div class="btn-group">

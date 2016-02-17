@@ -27,7 +27,7 @@
 	  		<ul class="list-group">
 				{% for obj in obj_list %}
 					<li class="list-group-item">
-						<a href="/{{ prefix }}/view/{{ obj.id }}">{{ obj.project_name }}</a>
+						<a href="/{{ prefix }}/view/{{ obj.id }}?html=1">{{ obj.project_name }}</a>
 						<a href="/{{ prefix }}/delete/{{ obj.id }}" class="pull-right ">delete</a>
 						<a href="/{{ prefix }}/disable/{{ obj.id }}" class="pull-right ">disable</a>
 						<a href="/{{ prefix }}/approve/{{ obj.id }}" class="pull-right ">approve</a>
