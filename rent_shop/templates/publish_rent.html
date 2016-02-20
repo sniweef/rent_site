@@ -84,9 +84,67 @@ $(document).on('change', '.btn-file :file', function() {
     btn.closest('.input-group-btn').prev().val(filenames_str);
     //input.trigger('fileselect', [numFiles, label]);
 });
+var files_url = new Array();
 function upload_file(upload_idx) {
+    //upload_idx: 0：项目概念图，1：招商手册
+    var files = $('#files' + upload_idx).get(0).files;
+    var files_max_num = new Array(3, 1);
+    var file_type = new Array('项目概念图', '招商手册');
+    if (files.length > files_max_num[upload_idx])
+    {
+        return alert('最多上传' + files_max_num[upload_idx] + '个' + file_type[upload_idx]);
+    }
+    console.log(upload_idx, files);
+    var form_data = new FormData();
+    for (var i in files)
+    {
+        var name = 'files[' + i + ']';
+        form_data.append(name, files[i]);
+    }
 
-    console.log(upload_idx);
+    $.ajax({
+        type:'POST',
+        url:'/resources',
+        data:form_data,
+        /**
+         *必须false才会自动加上正确的Content-Type
+         */
+        contentType:false,
+        /**
+         * 必须false才会避开jQuery对 formdata 的默认处理
+         * XMLHttpRequest会对 formdata 进行正确的处理
+         */
+        processData:false,
+        error: function(jqxhr, text_status, error_thrown) {
+            console.log(text_status, error_thrown);
+            console.log(jqxhr.responseText);
+            $('#bg-danger'+upload_idx).text(jqxhr.responseText);
+        },
+        success: function(data, text_status, jqxhr) {
+            var file_url_array = JSON.parse(jqxhr.responseText);
+            files_url[upload_idx] = file_url_array;
+            console.log(files_url[upload_idx]);
+            var div_id = 'url_list' + upload_idx;
+            var div = $('#'+div_id);
+
+            if (div.length == 0)
+            {
+                div = $('<div class="list-group" top-pad5></div>');
+                div.attr('id', div_id);
+                var danger = $('#bg-danger'+upload_idx);
+                danger.after(div);
+                console.log(danger, div);
+            }
+            for (var i in file_url_array)
+            {
+                var a = $('<a class="list-group-item"></a>');
+                a.attr('href', file_url_array[i]);
+                a.text(file_url_array[i]);
+                a.appendTo(div);
+                console.log(a);
+            }
+        }
+    });
 }
 /*
    $(document).ready(function() {
@@ -115,14 +173,15 @@ function upload_file(upload_idx) {
                         <input type="text" class="form-control" placeholder="Select file..." disabled>
                         <span class="input-group-btn">
                             <span class="btn btn-default btn-file">
-                                Browse<input type="file" multiple>
+                                Browse<input type="file" multiple id="files0">
                             </span>
-                            <button class="btn btn-default" type="button" onclick="upload_file(1)">Upload</button>
+                            <button class="btn btn-default" type="button" onclick="upload_file(0)">Upload</button>
                         </span>
                     </div>
+                    <p class="bg-danger" id="bg-danger0"></p>
                     {% endif %}
                     {% if rent_project %}
-                    <div class="list-group top-pad-5">
+                    <div class="list-group top-pad-5" id="url_list0">
                         {% for picture in rent_project.pictures %}
                         <a href="{{ picture }}" class="list-group-item">{{ picture }}</a>
                         {% endfor %}
@@ -135,13 +194,14 @@ function upload_file(upload_idx) {
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Select file..." disabled>
                         <span class="input-group-btn">
-                            <span class="btn btn-default btn-file">Browse<input type="file" multiple></span>
-                            <button class="btn btn-default" type="button" onclick="upload_file(2)">Upload</button>
+                            <span class="btn btn-default btn-file">Browse<input type="file" multiple id="files1"></span>
+                            <button class="btn btn-default" type="button" onclick="upload_file(1)">Upload</button>
                         </span>
                     </div>
+                    <p class="bg-danger" id="bg-danger1"></p>
                     {% endif %}
                     {% if rent_project %}
-                    <div class="list-group top-pad-5">
+                    <div class="list-group top-pad-5" id="url_list1">
                         <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure }}</a>
                     </div>
                     {% endif %}

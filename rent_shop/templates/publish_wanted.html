@@ -90,6 +90,7 @@
                     success: function(data, text_status, jqxhr) {
                         console.log(jqxhr.responseText);
                         g_postId = jqxhr.responseText;
+                        alert('上传成功，您可继续编辑');
                     }
                 });
             }
