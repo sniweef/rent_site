@@ -282,6 +282,9 @@ function post_rent() {
                     {% endif %}
                     {% if rent_project %}
                     <div class="list-group top-pad-5" id="url_list0">
+                        {% if not rent_project.pictures %}
+                        <p class="list-group-item">None</p>
+                        {% endif %}
                         {% for picture in rent_project.pictures %}
                         <a href="{{ picture }}" class="list-group-item">{{ picture.split('@')[-1] }}</a>
                         {% endfor %}
@@ -304,6 +307,8 @@ function post_rent() {
                     <div class="list-group top-pad-5" id="url_list1">
                         {% if rent_project.brochure %}
                         <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] }}</a>
+                        {% else %}
+                        <p class="list-grou-item">None</p>
                         {% endif %}
                     </div>
                     {% endif %}
