@@ -140,6 +140,7 @@ function upload_file(upload_idx) {
             $('#bg-danger'+upload_idx).text(jqxhr.responseText);
         },
         success: function(data, text_status, jqxhr) {
+            $('#bg-danger'+upload_idx).text('');
             clear_exist_files(upload_idx);
             var file_url_array = JSON.parse(jqxhr.responseText);
             files_url[upload_idx] = file_url_array;
@@ -181,8 +182,11 @@ function post_rent() {
         form_data.append('pictures-'+i, files_url[0][i]);
         console.log('Append: pictures-'+i, files_url[0][i]);
     }
-    form_data.append('brochure', files_url[1][0]);;
-    console.log('Appends: brochure', files_url[1][0]);;
+    if (files_url[1])
+    {
+        form_data.append('brochure', files_url[1][0]);;
+        console.log('Appends: brochure', files_url[1][0]);;
+    }
 
     var post_ids = new Array('project_name', 'project_type', 'position', 'address', 'contacter', 'phone');
     for (var i in post_ids)
@@ -231,6 +235,7 @@ function post_rent() {
         },
         success: function(data, text_status, jqxhr) {
             console.log(jqxhr.responseText);
+            $('#bg-danger').text('');
             g_post_id = jqxhr.responseText;
             alert('上传成功，您可继续编辑');
         }
@@ -292,7 +297,7 @@ function post_rent() {
                     {% endif %}
                     {% if rent_project %}
                     <div class="list-group top-pad-5" id="url_list1">
-                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] }}</a>
+                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] if rent_project.brochure}}</a>
                     </div>
                     {% endif %}
                     <div class="input-group">

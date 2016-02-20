@@ -107,8 +107,7 @@ def publish_rent():
         return render_template('publish_rent.html', editable=True, is_sell=is_sell)
 
     form = PublishRentForm(request.form)
-    #print form
-    print form.project_type.data, len(form.project_type.data)
+    # print form.project_type.data, len(form.project_type.data)
     if form.validate():
         if form.id.data:
             rent_project = RentProject.objects(id=form.id.data).first()
@@ -131,6 +130,9 @@ def publish_rent():
         rent_project.address = form.address.data
         rent_project.contacter = form.contacter.data
         rent_project.phone = form.phone.data
+        rent_project.shops_info = []
+        rent_project.shops_price = []
+        rent_project.shops_area = []
 
         new_shop_prices = []
         new_shop_areas = []
