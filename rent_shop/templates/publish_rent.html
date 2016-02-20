@@ -75,9 +75,14 @@ $(function() {
     {% if rent_project %}
     files_url[0] = new Array();
     {% for picture in rent_project.pictures %}
-    files_url[0].push({{picture}});
+    files_url[0].push('{{picture}}');
     {% endfor %}
-    files_url[1] = new Array({{rent_project.brochure}});
+    files_url[1] = new Array('{{rent_project.brochure}}');
+    {% endif %}
+
+    {% if not editable %}
+    $('input').attr('disabled', true);
+    $('#project_type').attr('disabled', true);
     {% endif %}
 });
 $(document).on('change', '.btn-file :file', function() {
@@ -170,7 +175,7 @@ function upload_file(upload_idx) {
 var g_post_id;
 function post_rent() {
     var form_data = new FormData();
-    form_data.append('is_sell', {{ is_sell }});
+    form_data.append('is_sell', {{ 1 if is_sell else 0 }});
 
     if (g_post_id)
     {
@@ -297,7 +302,9 @@ function post_rent() {
                     {% endif %}
                     {% if rent_project %}
                     <div class="list-group top-pad-5" id="url_list1">
-                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] if rent_project.brochure}}</a>
+                        {% if rent_project.brochure %}
+                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] }}</a>
+                        {% endif %}
                     </div>
                     {% endif %}
                     <div class="input-group">

@@ -23,6 +23,12 @@
                 };
                 $('#'+type_id_map['{{ wanted_shop.wanter_type }}']).prop('checked', true);
                 {% endif %}
+
+                {% if not editable %}
+                $('input').attr('disabled', true);
+                $('#business_type').attr('disabled', true);
+                $('#intention_type').attr('disabled', true);
+                {% endif %}
             });
             var g_postId = '';
             function publish_want() {
