@@ -52,7 +52,7 @@ class PublishRentForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
     is_sell = BooleanField('is_sell', false_values=('0', 'false'))
     project_name = StringField('project_name', validators=[Length(min=1, max=50)])
-    project_type = IntegerField('project_type', validators=[DataRequired()])
+    project_type = StringField('project_type', validators=[Length(min=1, max=10)])
     position = StringField('position', validators=[Length(max=50)])
     address = StringField('locale', validators=[Length(min=1, max=50), DataRequired()])
     brochure = StringField('brochure', validators=[URLOrEmpty()])

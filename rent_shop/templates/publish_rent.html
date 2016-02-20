@@ -3,7 +3,7 @@
 {{ pro_type_strs[pro_type] }}
 {% endmacro %}
 {% macro print_shop(shop) %}
-<div class="panel panel-default">
+<div class="panel panel-default shop-info">
     <div class="panel-heading">
         <span>铺位信息</span>
         {% if editable %}
@@ -16,28 +16,28 @@
     <div class="panel-body">
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">铺位号</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+            <input type="text" class="form-control shop_number" placeholder="" aria-describedby="basic-addon2"
                     value="{{ shop.shop_number if shop }}">
 
-            <span class="input-group-addon" id="basic-addon2"">使用面积</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+            <span class="input-group-addon" id="basic-addon2">使用面积</span>
+            <input type="text" class="form-control area" placeholder="" aria-describedby="basic-addon2"
                    value="{{ shop.area if shop }}">
             <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">租金/售价</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+            <input type="text" class="form-control price" placeholder="" aria-describedby="basic-addon2"
                     value="{{ shop.price if shop }}">
-            <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+            <span class="input-group-addon" id="basic-addon2">￥/m<sup>2</sup></span>
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">工程条件</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+            <input type="text" class="form-control project_condition" placeholder="" aria-describedby="basic-addon2"
                     value="{{ shop.project_condition if shop }}">
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">其它</span>
-            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+            <input type="text" class="form-control others" placeholder="" aria-describedby="basic-addon2"
                     value="{{ shop.others if shop }}">
         </div>
     </div>
@@ -50,12 +50,14 @@
         {% include 'include_files.html' %}
 
         <script type='text/javascript'>
-        function add_shop(btn_obj) {
-            var shop_panel = $(btn_obj).closest('.panel');
-            var shop_panel_clone = shop_panel.clone();
-            shop_panel_clone.find('input').val('');
-            shop_panel.after(shop_panel_clone);
-        }
+var files_url = new Array();
+
+function add_shop(btn_obj) {
+    var shop_panel = $(btn_obj).closest('.panel');
+    var shop_panel_clone = shop_panel.clone();
+    shop_panel_clone.find('input').val('');
+    shop_panel.after(shop_panel_clone);
+}
 function del_shop(btn_obj) {
     var shop_panels = $('.panel-body .panel');
     if (shop_panels.length <= 1) {
@@ -69,7 +71,14 @@ $(function() {
     $('a').click(function() {
         $(this).closest('ul').prev().text($(this).text());
         $(this).closest('ul').prev().prev().text($(this).text());
-    })
+    });
+    {% if rent_project %}
+    files_url[0] = new Array();
+    {% for picture in rent_project.pictures %}
+    files_url[0].push({{picture}});
+    {% endfor %}
+    files_url[1] = new Array({{rent_project.brochure}});
+    {% endif %}
 });
 $(document).on('change', '.btn-file :file', function() {
     var btn = $(this);
@@ -84,7 +93,17 @@ $(document).on('change', '.btn-file :file', function() {
     btn.closest('.input-group-btn').prev().val(filenames_str);
     //input.trigger('fileselect', [numFiles, label]);
 });
-var files_url = new Array();
+function clear_exist_files(file_type) {
+    //file_type: 0(picture), 1(brochure)
+    var delete_url;
+    for (var i in files_url[file_type])
+    {
+        delete_url = files_url[file_type][i].replace('resources', 'resources/delete');
+        $.get(delete_url);
+    }
+    files_url[file_type] = null;
+    $('#url_list'+file_type).empty();
+}
 function upload_file(upload_idx) {
     //upload_idx: 0：项目概念图，1：招商手册
     var files = $('#files' + upload_idx).get(0).files;
@@ -121,6 +140,7 @@ function upload_file(upload_idx) {
             $('#bg-danger'+upload_idx).text(jqxhr.responseText);
         },
         success: function(data, text_status, jqxhr) {
+            clear_exist_files(upload_idx);
             var file_url_array = JSON.parse(jqxhr.responseText);
             files_url[upload_idx] = file_url_array;
             console.log(files_url[upload_idx]);
@@ -139,10 +159,80 @@ function upload_file(upload_idx) {
             {
                 var a = $('<a class="list-group-item"></a>');
                 a.attr('href', file_url_array[i]);
-                a.text(file_url_array[i]);
+                a.text(file_url_array[i].split('@')[1]);
                 a.appendTo(div);
                 console.log(a);
             }
+        }
+    });
+}
+var g_post_id;
+function post_rent() {
+    var form_data = new FormData();
+    form_data.append('is_sell', {{ is_sell }});
+
+    if (g_post_id)
+    {
+        form_data.append('id', g_post_id);
+    }
+
+    for (var i in files_url[0])
+    {
+        form_data.append('pictures-'+i, files_url[0][i]);
+        console.log('Append: pictures-'+i, files_url[0][i]);
+    }
+    form_data.append('brochure', files_url[1][0]);;
+    console.log('Appends: brochure', files_url[1][0]);;
+
+    var post_ids = new Array('project_name', 'project_type', 'position', 'address', 'contacter', 'phone');
+    for (var i in post_ids)
+    {
+        var ele = $('#'+post_ids[i]);
+        var value = ele.val();
+        if (!value)
+        {
+            value = ele.text();
+        }
+        form_data.append(post_ids[i], value);
+        console.log('Append: ', post_ids[i], value);
+    }
+
+    var shops_info = $('.shop-info');
+    var info_ids = new Array('shop_number', 'area', 'price', 'project_condition', 'others');
+    shops_info.each(function(idx, ele) {
+        var ele_obj = $(ele);
+        var value;
+        var key = 'shops_info-' + idx + '-';
+        for (var i in info_ids)
+        {
+            value = ele_obj.find('.'+info_ids[i]).val();
+            form_data.append(key+info_ids[i], value);
+            console.log('Appends:', key+info_ids[i], value);
+        }
+    });
+
+    $.ajax({
+        type:'POST',
+        url:'/rent/publish',
+        data:form_data,
+        /**
+         *必须false才会自动加上正确的Content-Type
+         */
+        contentType:false,
+        /**
+         * 必须false才会避开jQuery对 formdata 的默认处理
+         * XMLHttpRequest会对 formdata 进行正确的处理
+         */
+        processData:false,
+        error: function(jqxhr, text_status, error_thrown) {
+            console.log(text_status, error_thrown);
+            console.log(jqxhr.responseText);
+            $('#bg-danger').text(jqxhr.responseText);
+        },
+        success: function(data, text_status, jqxhr) {
+            console.log(jqxhr.responseText);
+            g_post_id = jqxhr.responseText;
+            alert('上传成功，您可继续编辑');
         }
     });
 }
@@ -183,7 +273,7 @@ function upload_file(upload_idx) {
                     {% if rent_project %}
                     <div class="list-group top-pad-5" id="url_list0">
                         {% for picture in rent_project.pictures %}
-                        <a href="{{ picture }}" class="list-group-item">{{ picture }}</a>
+                        <a href="{{ picture }}" class="list-group-item">{{ picture.split('@')[-1] }}</a>
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -202,15 +292,15 @@ function upload_file(upload_idx) {
                     {% endif %}
                     {% if rent_project %}
                     <div class="list-group top-pad-5" id="url_list1">
-                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure }}</a>
+                        <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] }}</a>
                     </div>
                     {% endif %}
                     <div class="input-group">
                         <span class="input-group-addon">项目名称</span>
-                        <input type="text" class="form-control" aria-label="..." value="{{ rent_project.project_name if rent_project }}">
+                        <input id="project_name" type="text" class="form-control" aria-label="..." value="{{ rent_project.project_name if rent_project }}">
                         <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {% if rent_project %} {{ pro_type_to_str(rent_project.project_type) }} {% else %}类别{% endif %} <span class="caret"></span></button>
+                            <button id="project_type" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if rent_project %} {{ rent_project.project_type }} {% else %}类别{% endif %} <span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right">
                                 <li><a >购物中心</a></li>
                                 <li><a >步行街</a></li>
@@ -227,22 +317,22 @@ function upload_file(upload_idx) {
                         </div>-->
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">定位</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                            <input id="position" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                     value="{{ rent_project.position if rent_project }}">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">地址</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                            <input id="address" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                     value="{{ rent_project.address if rent_project }}">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">联系人</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                            <input id="contacter" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                     value="{{ rent_project.contacter if rent_project }}">
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">联系方式</span>
-                            <input type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
+                            <input id="phone" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                 value="{{ rent_project.phone if rent_project }}">
                         </div>
 
@@ -253,9 +343,9 @@ function upload_file(upload_idx) {
                         {{ print_shop(shop) }}
                         {% endfor %}
                         {% endif %}
-                        <p class="bg-danger"></p>
+                        <p class="bg-danger" id="bg-danger"></p>
                         {% if editable %}
-                        <button type="button" class="btn btn-primary">提交</button>
+                        <button type="button" class="btn btn-primary" onclick="post_rent()">提交</button>
                         {% endif %}
                 </form>
                         </div>

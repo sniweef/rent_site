@@ -35,7 +35,7 @@ class RentProject(Document):
     pictures = ListField(URLField(max_length=100))
     brochure = URLField(max_length=100)
     project_name = StringField(required=True, max_length=50)
-    project_type = IntField()
+    project_type = StringField(required=True, max_length=10)
     position = StringField(max_length=50)
     address = StringField(required=True, max_length=50)
     contacter = StringField(max_length=50)

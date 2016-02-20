@@ -102,10 +102,13 @@ def get_or_create_user(form):
 @rent.route('/publish', methods=['GET', 'POST'])
 def publish_rent():
     if request.method == 'GET':
-        return render_template('publish_rent.html', editable=True)
+        is_sell = request.args.get('is_sell', '')
+        is_sell = 1 if is_sell else 0
+        return render_template('publish_rent.html', editable=True, is_sell=is_sell)
 
     form = PublishRentForm(request.form)
     #print form
+    print form.project_type.data, len(form.project_type.data)
     if form.validate():
         if form.id.data:
             rent_project = RentProject.objects(id=form.id.data).first()
@@ -123,6 +126,7 @@ def publish_rent():
         rent_project.brochure = form.brochure.data if form.brochure.data else None
         rent_project.project_name = form.project_name.data
         rent_project.project_type = form.project_type.data
+        print rent_project.project_type
         rent_project.position = form.position.data
         rent_project.address = form.address.data
         rent_project.contacter = form.contacter.data

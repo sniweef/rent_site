@@ -27,10 +27,10 @@ def new_resources():
     pic_urls = []
 
     for file_prefix, file_obj in request.files.iteritems():
-        filename_suffix = os.path.splitext(file_obj.filename)[-1]
-        new_filename = str(ObjectId()) + filename_suffix
+        # filename_suffix = os.path.splitext(file_obj.filename)[-1]
+        new_filename = str(ObjectId()) + '@' + file_obj.filename
         new_file_path = os.path.join(pic_dir_path, new_filename)
-        print filename_suffix, new_file_path
+        #print filename_suffix, new_file_path
         file_obj.save(new_file_path)
         pic_urls.append(url_preffix + new_filename)
 
@@ -46,11 +46,17 @@ def view_resource(shop_pic_dir, shop_pic_name):
         abort(404)
 
 
-@resources.route('/delete/<shop_pic_dir>')
-def delete_resource_dir(shop_pic_dir):
+@resources.route('/delete/<res_dir>')
+def delete_resource_dir(res_dir):
     pass
 
 
-@resources.route('/delete/<shop_pic_dir>/<shop_pic_name>')
-def delete_resource(shop_pic_dir):
-    pass
+@resources.route('/delete/<res_dir>/<res_name>')
+def delete_resource(res_dir, res_name):
+    resource_file_path = os.path.join(SHOP_PICS_ROOT_DIR, res_dir, res_name)
+    try:
+        os.unlink(resource_file_path)
+    except IOError:
+        abort(400)
+
+    return 'OK'
