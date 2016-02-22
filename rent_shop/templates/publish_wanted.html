@@ -29,6 +29,8 @@
                 $('#business_type').attr('disabled', true);
                 $('#intention_type').attr('disabled', true);
                 {% endif %}
+
+                $('.rent_or_buy')[{{1 if is_buy else 0}}].click();
             });
             var g_postId = '';
             function publish_want() {
