@@ -17,6 +17,7 @@ rent = Blueprint('rent', __name__, url_prefix='/rent')
 def search_rent():
     try:
         key = request.args.get('key', '')
+        is_sell = True if int(request.args.get('is_sell', 0)) else False
         from_idx = int(request.args.get('from', 0))
         city = request.args.get('city', '')
         min_area = int(request.args.get('min_area', 0))
@@ -33,7 +34,7 @@ def search_rent():
 
     key = key.strip()
     keys = key.split(' ')
-    q_expr = Q(is_approved=True)
+    q_expr = Q(is_approved=True) & Q(is_sell=is_sell)
 
     if max_area > 0 and max_area > min_area:
         q_expr = q_expr & Q(shops_area__gte=min_area, shops_area__lte=max_area)
@@ -205,4 +206,5 @@ def manage_rent():
 @rent.route('/search_controller')
 def search_controller():
     if request.method == 'GET':
-        return render_template('rent_sold_projects.html')
+        is_sell = True if int(request.args.get('is_sell', 0)) else False
+        return render_template('rent_sold_projects.html', is_sell=is_sell)

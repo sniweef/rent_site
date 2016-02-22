@@ -20,7 +20,7 @@
         }
 
 function is_buy_filter(idx) {
-    var idx_val_map = [1, 0];
+    var idx_val_map = [0, 1];
     replace_arg('is_buy', idx_val_map[idx]);
 }
 function area_filter(area_idx) {
@@ -72,7 +72,8 @@ function refresh_result() {
 }
 $(function(){
     $('li').click(li_selected);
-    $.get("/wanted/search?html=1", function(result){
+    $('#is-buy-selector').children()[{{1 if is_buy else 0 }}].click();
+    $.get("/wanted/search?html=1&is_buy={{1 if is_buy else 0}}", function(result){
         $("#result_container").html(result);
   });
 });
@@ -113,8 +114,8 @@ $(function(){
                             意向 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" id="is-buy-selector">
-                            <li><a>购买</a></li>
                             <li><a>承租</a></li>
+                            <li><a>购买</a></li>
                         </ul>
                     </div>
                     <div class="btn-group">

@@ -144,4 +144,5 @@ def manage_rent():
 @wanted.route('/search_controller')
 def search_controller():
     if request.method == 'GET':
-        return render_template('wanted_project.html')
+        is_buy = True if int(request.args.get('is_buy', 0)) else False
+        return render_template('wanted_project.html', is_buy=is_buy)
