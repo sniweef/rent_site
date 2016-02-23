@@ -22,6 +22,8 @@
                     '公司': 'company'
                 };
                 $('#'+type_id_map['{{ wanted_shop.wanter_type }}']).prop('checked', true);
+                {% else %}
+                $('#personal').click();
                 {% endif %}
 
                 {% if not editable %}
@@ -73,6 +75,16 @@
                         value = $('#' + args[i]).val();
                     }
                     console.log('appends: ', args[i], value);
+                    if (args[i] == 'intention_type' && value.trim() == '意向类型')
+                    {
+                        $('.bg-danger').text('请选择意向类型');
+                        return ;
+                    }
+                    else if (args[i] == 'business_type' && value.trim() == '经营类型')
+                    {
+                        $('.bg-danger').text('请选择经营类型');
+                        return ;
+                    }
                     form_data.append(args[i], value);
                 }
                 console.log(form_data);
@@ -93,7 +105,24 @@
                     error: function(jqxhr, text_status, error_thrown) {
                         console.log(text_status, error_thrown);
                         console.log(jqxhr.responseText);
-                        $('.bg-danger').text(jqxhr.responseText);
+                        var response = jqxhr.responseText;
+                        var error_msg_map = {
+                            'brand_name': '品牌名称不能大于10个字符',
+                            'intention_type': '意向类型不能大于10个字符',
+                            'business_type': '经营类型不能大于10个字符',
+                            'area': '使用面积不能为空且应为数字',
+                            'project_demand': '工程需求不能大于50个字符',
+                            'contacter': '联系人不能为空且长度应在1－50之间',
+                            'phone': '联系方式不能为空且长度应在1－50之间',
+                        };
+
+                        for (var i in error_msg_map)
+                        {
+                            if (response.search(i) >= 0)
+                            {
+                                $('.bg-danger').text(error_msg_map[i]);
+                            }
+                        }
                     },
                     success: function(data, text_status, jqxhr) {
                         console.log(jqxhr.responseText);
@@ -170,6 +199,7 @@
                                 <span class="input-group-addon" id="basic-addon2">使用面积</span>
                                 <input id="area" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.area if wanted_shop }}">
                                 <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+                                <span class="input-group-addon must-have">*</span>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">意向价格</span>
@@ -183,13 +213,17 @@
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系人</span>
                                 <input id="contacter" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2" value="{{ wanted_shop.contacter if wanted_shop }}">
+                                <span class="input-group-addon must-have">*</span>
                             </div>
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系方式</span>
                                 <input id="phone" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                         value="{{ wanted_shop.phone if wanted_shop }}">
+                                <span class="input-group-addon must-have">*</span>
                             </div>
-                            <p class="bg-danger"></p>
+                            <div class="input-group">
+                                <p class="bg-danger"></p>
+                            </div>
                             {% if editable %}
                             <button type="button" class="btn btn-primary" onclick="publish_want()">提交</button>
                             {% endif %}

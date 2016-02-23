@@ -93,4 +93,7 @@ li a {
 	cursor: inherit;
 	display: block;
 }
-
+.must-have {
+    color: #FF00FF;
+    background-color: #FF60FF;
+}

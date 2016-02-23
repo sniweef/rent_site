@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, IntegerField, FieldList, FormField, BooleanField
+from wtforms import Form, StringField, IntegerField, FieldList, FormField, BooleanField, FloatField
 from wtforms.validators import *
 
 __author__ = 'hzhigeng'
@@ -42,8 +42,8 @@ class URLOrEmpty(URL):
 
 class ShopForm(Form):
     shop_number = StringField('shop_number', validators=[Length(min=1, max=10)])
-    area = IntegerField('area')
-    price = IntegerField('price')
+    area = FloatField('area')
+    price = StringField('price', validators=[Length(max=10)])
     project_condition = StringField('project_condition', validators=[Length(max=100)])
     others = StringField('others', validators=[Length(max=100)])
 
@@ -73,11 +73,11 @@ class PublishWantedForm(Form):
     id = StringField('id', validators=[ObjectIdValidator()])
     is_buy = BooleanField('is_buy', false_values=('false', '0'))
     wanter_type = StringField('wanter_type', validators=[DataRequired()])
-    intention_type = StringField('intention_type', validators=[DataRequired()])
-    business_type = StringField('business_type', validators=[DataRequired()])
+    intention_type = StringField('intention_type', validators=[DataRequired(), Length(max=10)])
+    business_type = StringField('business_type', validators=[DataRequired(), Length(max=10)])
     brand_name = StringField('brand_name', validators=[Length(max=10)])
-    area = IntegerField(validators=[DataRequired()])
-    intention_price = IntegerField()
+    area = FloatField(validators=[DataRequired()])
+    intention_price = StringField(validators=[Length(max=10)])
     project_demand = StringField('project_demand', validators=[Length(max=50)])
     contacter = StringField('contacter', validators=[Length(min=1, max=50), DataRequired()])
     phone = StringField('phone', validators=[Length(min=1, max=50), DataRequired()])

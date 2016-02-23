@@ -16,8 +16,8 @@ class User(Document):
 
 class Shop(EmbeddedDocument):
     shop_number = StringField(max_length=10)
-    area = IntField()
-    price = IntField()
+    area = FloatField()
+    price = StringField(max_length=10)
     project_condition = StringField(max_length=50)
     others = StringField(max_length=50)  # including potential tenants
 
@@ -41,8 +41,8 @@ class RentProject(Document):
     contacter = StringField(max_length=50)
     phone = StringField(max_length=50)
     shops_info = ListField(EmbeddedDocumentField(Shop))
-    shops_price = ListField(IntField())
-    shops_area = ListField(IntField())
+    shops_price = ListField(StringField(max_length=10))
+    shops_area = ListField(FloatField())
     shops_investment = ListField(StringField(max_length=50))
 
 
@@ -50,12 +50,12 @@ class WantedShop(Document):
     # create_time = DateTimeField()
     is_approved = BooleanField()
     is_buy = BooleanField()
-    wanter_type = StringField(max_length=5)
-    intention_type = StringField(max_length=5)
-    business_type = StringField(max_length=5)
+    wanter_type = StringField(max_length=10)
+    intention_type = StringField(max_length=10)
+    business_type = StringField(max_length=10)
     brand_name = StringField(max_length=10)
-    area = IntField()
-    intention_price = IntField()
+    area = FloatField()
+    intention_price = StringField(max_length=10)
     project_demand = StringField(max_length=50)
     contacter = StringField(min_length=1, max_length=50)
     phone = StringField(min_length=1, max_length=50)

@@ -18,11 +18,14 @@
             <span class="input-group-addon" id="basic-addon2">铺位号</span>
             <input type="text" class="form-control shop_number" placeholder="" aria-describedby="basic-addon2"
                     value="{{ shop.shop_number if shop }}">
-
+            <span class="input-group-addon must-have">*</span>
+        </div>
+        <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">使用面积</span>
             <input type="text" class="form-control area" placeholder="" aria-describedby="basic-addon2"
                    value="{{ shop.area if shop }}">
             <span class="input-group-addon" id="basic-addon2">m<sup>2</sup></span>
+            <span class="input-group-addon must-have">*</span>
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">租金/售价</span>
@@ -61,9 +64,9 @@ function add_shop(btn_obj) {
 function del_shop(btn_obj) {
     var shop_panels = $('.panel-body .panel');
     if (shop_panels.length <= 1) {
-        return alert("Must contain at least one shop.");
+        return alert("至少包含一个铺位信息。");
     }
-    if (confirm('Do you really want to delete this entry?')) {
+    if (confirm('您确定要删除此铺位信息吗？')) {
         $(btn_obj).closest('.panel').remove();
     }
 }
@@ -142,7 +145,8 @@ function upload_file(upload_idx) {
         error: function(jqxhr, text_status, error_thrown) {
             console.log(text_status, error_thrown);
             console.log(jqxhr.responseText);
-            $('#bg-danger'+upload_idx).text(jqxhr.responseText);
+            //$('#bg-danger'+upload_idx).text(jqxhr.responseText);
+            $('#bg-danger'+upload_idx).text('上传文件失败！');
         },
         success: function(data, text_status, jqxhr) {
             $('#bg-danger'+upload_idx).text('');
@@ -236,7 +240,24 @@ function post_rent() {
         error: function(jqxhr, text_status, error_thrown) {
             console.log(text_status, error_thrown);
             console.log(jqxhr.responseText);
-            $('#bg-danger').text(jqxhr.responseText);
+            var response = jqxhr.responseText;
+            var error_msg_map = {
+                'project_name': '项目名称不能为空且长度应在1－50个字符之间',
+                'shop_number': '铺位号不能为空且长度应在1－10个字符之间',
+                'area': '使用面积不能为空且应为数字',
+                'project_type': '请选择项目类别',
+                'contacter': '联系人不能为空且长度应在1－50之间',
+                'phone': '联系方式不能为空且长度应在1－50之间',
+                'address': '项目名称不能为空且长度应在1－50个字符之间',
+            };
+
+            for (var i in error_msg_map)
+            {
+                if (response.search(i) >= 0)
+                {
+                    $('#bg-danger').text(error_msg_map[i]);
+                }
+            }
         },
         success: function(data, text_status, jqxhr) {
             console.log(jqxhr.responseText);
@@ -325,6 +346,7 @@ function post_rent() {
                                 <li><a >社区商业</a></li>
                             </ul>
                         </div>
+                        <span class="input-group-addon must-have">*</span>
                     </div>
                     <!--
                         <div class="input-group">
@@ -341,16 +363,19 @@ function post_rent() {
                             <span class="input-group-addon" id="basic-addon2">地址</span>
                             <input id="address" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                     value="{{ rent_project.address if rent_project }}">
+                            <span class="input-group-addon must-have">*</span>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">联系人</span>
                             <input id="contacter" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                     value="{{ rent_project.contacter if rent_project }}">
+                            <span class="input-group-addon must-have">*</span>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="basic-addon2">联系方式</span>
                             <input id="phone" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
                                 value="{{ rent_project.phone if rent_project }}">
+                            <span class="input-group-addon must-have">*</span>
                         </div>
 
                         {% if editable %}
