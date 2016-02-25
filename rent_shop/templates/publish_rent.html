@@ -121,6 +121,7 @@ function upload_file(upload_idx) {
     {
         return alert('最多上传' + files_max_num[upload_idx] + '个' + file_type[upload_idx]);
     }
+    $('#bg-danger'+upload_idx).text('上传文件中...');
     console.log(upload_idx, files);
     var form_data = new FormData();
     for (var i in files)
@@ -291,12 +292,12 @@ function post_rent() {
                     <span>选择上传，格式为JPG、PNG、JPEG、BMP</span>
 
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Select file..." disabled>
+                        <input type="text" class="form-control" placeholder="选择文件" disabled>
                         <span class="input-group-btn">
                             <span class="btn btn-default btn-file">
-                                Browse<input type="file" multiple id="files0">
+                                浏览<input type="file" multiple id="files0">
                             </span>
-                            <button class="btn btn-default" type="button" onclick="upload_file(0)">Upload</button>
+                            <button class="btn btn-default" type="button" onclick="upload_file(0)">上传</button>
                         </span>
                     </div>
                     <p class="bg-danger" id="bg-danger0"></p>
@@ -316,10 +317,10 @@ function post_rent() {
                     {% if editable %}
                     <span>选择上传，格式为PPT、MP4、WMV</span>
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Select file..." disabled>
+                        <input type="text" class="form-control" placeholder="选择文件" disabled>
                         <span class="input-group-btn">
-                            <span class="btn btn-default btn-file">Browse<input type="file" multiple id="files1"></span>
-                            <button class="btn btn-default" type="button" onclick="upload_file(1)">Upload</button>
+                            <span class="btn btn-default btn-file">浏览<input type="file" multiple id="files1"></span>
+                            <button class="btn btn-default" type="button" onclick="upload_file(1)">上传</button>
                         </span>
                     </div>
                     <p class="bg-danger" id="bg-danger1"></p>

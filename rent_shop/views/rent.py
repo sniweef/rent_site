@@ -126,7 +126,7 @@ def publish_rent():
         rent_project.brochure = form.brochure.data if form.brochure.data else None
         rent_project.project_name = form.project_name.data
         rent_project.project_type = form.project_type.data
-        print rent_project.project_type
+        # print rent_project.project_type
         rent_project.position = form.position.data
         rent_project.address = form.address.data
         rent_project.contacter = form.contacter.data
