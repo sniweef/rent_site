@@ -81,6 +81,7 @@ function li_selected() {
         $(this).closest('ul').prev().text($(this).text());
         $(this).closest('ul').prev().prev().text($(this).text());
     }
+    refresh_result();
 }
 function refresh_result() {
     console.log(g_get_args);
@@ -153,17 +154,6 @@ $(function(){
 
                             <div class="btn-group">
                                 <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    价格<span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" id="sort-selector">
-                                   <li><a>价格从低到高</a></li>
-                                   <li><a>价格从高到低</a></li>
-                                   <li><a>使用面积从小到大</a></li>
-                                   <li><a>使用面积从大到小</a></li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     招商对象<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" id="invest-selector">
@@ -173,6 +163,18 @@ $(function(){
                                     <li><a>银行金融</a></li>
                                     <li><a>专业服务</a></li>
                                     <li><a>其它</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    排序<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" id="sort-selector">
+                                    <li><a>价格从低到高</a></li>
+                                    <li><a>价格从高到低</a></li>
+                                    <li><a>使用面积从小到大</a></li>
+                                    <li><a>使用面积从大到小</a></li>
                                 </ul>
                             </div>
                             <!--

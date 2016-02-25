@@ -96,3 +96,6 @@ li a {
 .must-have {
     color: #FF00FF;
 }
+.hide {
+    display: none;
+}

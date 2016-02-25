@@ -32,7 +32,7 @@
                 $('#intention_type').attr('disabled', true);
                 {% endif %}
 
-                $('.rent_or_buy')[{{1 if is_buy else 0}}].click();
+                //$('.rent_or_buy')[{{1 if is_buy else 0}}].click();
             });
             var g_postId = '';
             function publish_want() {
@@ -46,10 +46,10 @@
                 }
 
                 var is_buy = 0;
-                if ($('#buy_cb').prop('checked'))
+                /*if ($('#buy_cb').prop('checked'))
                 {
                     is_buy = 1;
-                }
+                }*/
                 form_data.append('is_buy', is_buy);
 
                 var wanter_types = $('.wanter_type');
@@ -108,9 +108,9 @@
                         var response = jqxhr.responseText;
                         var error_msg_map = {
                             'brand_name': '品牌名称不能大于10个字符',
-                            'intention_type': '意向类型不能大于10个字符',
+                            'intention_type': '意向类型不能大于20个字符',
                             'business_type': '经营类型不能大于10个字符',
-                            'area': '使用面积不能为空且应为数字',
+                            'area': '使用面积不能为空且不能大于20个字符',
                             'project_demand': '工程需求不能大于50个字符',
                             'contacter': '联系人不能为空且长度应在1－50之间',
                             'phone': '联系方式不能为空且长度应在1－50之间',
@@ -146,27 +146,29 @@
                     <div class="col-xs-12">
                         <form class="bs-example bs-example-form" data-example-id="simple-input-groups" name="upload_form" id="upload_form">
                             <div class="input-group">
-                        <span class="input-group-addon ">
-                            <input type="checkbox" aria-label="..." class="rent_or_buy" value="0" {% if wanted_shop and not wanted_shop.is_buy %}checked="checked" {% endif %}>
-                            <span>承租</span>
-                        </span>
-                        <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="rent_or_buy" id="buy_cb" value="1" {% if wanted_shop and wanted_shop.is_buy %}checked="checked" {% endif %}>
-                            <span>购买</span>
-                        </span>
-                                <span>  </span>
-                        <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type" id="personal">
-                            <span>个人</span>
-                        </span>
-                        <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type" id="franchisee">
-                            <span>加盟商</span>
-                        </span>
-                        <span class="input-group-addon">
-                            <input type="checkbox" aria-label="..." class="wanter_type" id="company">
-                            <span>公司</span>
-                        </span>
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="..." class="wanter_type" id="personal">
+                                <span>个人</span>
+                            </span>
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="..." class="wanter_type" id="franchisee">
+                                <span>加盟商</span>
+                            </span>
+                            <span class="input-group-addon">
+                                <input type="checkbox" aria-label="..." class="wanter_type" id="company">
+                                <span>公司直营</span>
+                            </span>
+                            <!--
+                            <span></span>
+                                <span class="input-group-addon hide">
+                                    <input type="checkbox" aria-label="..." class="rent_or_buy" value="0" {% if wanted_shop and not wanted_shop.is_buy %}checked="checked" {% endif %}>
+                                    <span>承租</span>
+                                </span>
+                                <span class="input-group-addon hide">
+                                    <input type="checkbox" aria-label="..." class="rent_or_buy" id="buy_cb" value="1" {% if wanted_shop and wanted_shop.is_buy %}checked="checked" {% endif %}>
+                                    <span>购买</span>
+                                </span>
+                            -->
                             </div><!-- /input-group -->
                             <div class="input-group">
                                 <div class="input-group-btn">
@@ -218,7 +220,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon" id="basic-addon2">联系方式</span>
                                 <input id="phone" type="text" class="form-control" placeholder="" aria-describedby="basic-addon2"
-                                        value="{{ wanted_shop.phone if wanted_shop }}">
+                                                                                                  value="{{ wanted_shop.phone if wanted_shop }}">
                                 <span class="input-group-addon must-have">*</span>
                             </div>
                             <div class="input-group">

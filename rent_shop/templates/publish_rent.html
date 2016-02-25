@@ -305,7 +305,7 @@ function post_rent() {
                     {% if rent_project %}
                     <div class="list-group top-pad-5" id="url_list0">
                         {% if not rent_project.pictures %}
-                        <p class="list-group-item">None</p>
+                        <p class="list-group-item">无</p>
                         {% endif %}
                         {% for picture in rent_project.pictures %}
                         <a href="{{ picture }}" class="list-group-item">{{ picture.split('@')[-1] }}</a>
