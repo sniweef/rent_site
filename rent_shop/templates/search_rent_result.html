@@ -13,7 +13,7 @@
 
 {% for shop in shop_list %}
 <div class="list-group">
-    <a class="list-group-item" href="/rent/view/{{ shop.id }}?html=1">
+    <a class="list-group-item" href="/rent/view/{{ shop.id }}?html=1&redirect={{redirect_url}}">
         <h5 class="list-group-item-heading">[{{shop.project_type}}]</h5>
         <p class="list-group-item-text">项目名称：{{ shop.project_name }}</p>
         <p class="list-group-item-text">地址：{{ shop.address }}</p>

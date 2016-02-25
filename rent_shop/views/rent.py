@@ -74,8 +74,11 @@ def search_rent():
             query_result = RentProject.objects(q_expr & Q(address__icontains=key))
 
     show_html = request.args.get('html', '')
+    redirect_url = request.full_path.replace('&', '%26').replace('?', '%3F')
+    # print request.full_path
     if show_html:
-        return render_template('search_rent_result.html', shop_list=query_result.order_by(order_keyword))
+        return render_template('search_rent_result.html', shop_list=query_result.order_by(order_keyword),
+                               redirect_url=redirect_url)
 
     return query_result.only('id', 'project_name', 'address', 'shops_price', 'shops_area', 'shops_investment').\
         order_by(order_keyword).skip(from_idx).limit(10).to_json()
@@ -84,10 +87,13 @@ def search_rent():
 @rent.route('/view/<rent_project_id>')
 def view_rent(rent_project_id):
     as_html = request.args.get('html', '')
+    redirect_url = request.args.get('redirect', '').replace('search', 'search_controller')
+    print 'redirect:', redirect_url
     try:
         rent_project = RentProject.objects(id=rent_project_id).first()
         if as_html:
-            return render_template('publish_rent.html', rent_project=rent_project, editable=False)
+            return render_template('publish_rent.html', rent_project=rent_project, editable=False,
+                                   redirect_url=redirect_url)
         return rent_project.to_json()
     except (ValidationError, AttributeError):
         return '{}'
@@ -207,4 +213,7 @@ def manage_rent():
 def search_controller():
     if request.method == 'GET':
         is_sell = True if int(request.args.get('is_sell', 0)) else False
-        return render_template('rent_sold_projects.html', is_sell=is_sell)
+        print 'full_path:', request.full_path
+        keys = request.full_path.replace('/rent/search_controller', '').replace('?', '')
+        print 'search_controller:', keys
+        return render_template('rent_sold_projects.html', is_sell=is_sell, keys=keys)

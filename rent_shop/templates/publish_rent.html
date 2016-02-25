@@ -330,7 +330,7 @@ function post_rent() {
                         {% if rent_project.brochure %}
                         <a href="{{ rent_project.brochure  }}" class="list-group-item">{{ rent_project.brochure.split('@')[-1] }}</a>
                         {% else %}
-                        <p class="list-grou-item">None</p>
+                        <p class="list-group-item">无</p>
                         {% endif %}
                     </div>
                     {% endif %}
@@ -389,6 +389,9 @@ function post_rent() {
                         <p class="bg-danger" id="bg-danger"></p>
                         {% if editable %}
                         <button type="button" class="btn btn-primary" onclick="post_rent()">提交</button>
+                        {% endif %}
+                        {% if redirect_url %}
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='{{redirect_url}}'">返回上一页</button>
                         {% endif %}
                 </form>
                         </div>

@@ -229,6 +229,9 @@
                             {% if editable %}
                             <button type="button" class="btn btn-primary" onclick="publish_want()">提交</button>
                             {% endif %}
+                            {% if redirect_url %}
+                            <button type="button" class="btn btn-primary" onclick="window.location.href='{{redirect_url}}'">返回上一页</button>
+                            {% endif %}
                         </form>
                     </div>
                 </div>

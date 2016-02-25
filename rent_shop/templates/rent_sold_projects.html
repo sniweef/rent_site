@@ -93,9 +93,11 @@ function refresh_result() {
 }
 $(function(){
     $('li').click(li_selected);
-    $.get("/rent/search?html=1&is_sell={{ 1 if is_sell else 0 }}", function(result){
+    {% autoescape false %}
+    $.get("/rent/search?html=1&is_sell={{ 1 if is_sell else 0 }}&{{keys}}", function(result){
         $("#result_container").html(result);
     });
+    {% endautoescape %}
 });
         </script>
     </head>

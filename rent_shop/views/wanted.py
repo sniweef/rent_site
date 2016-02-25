@@ -48,8 +48,10 @@ def search_wanted():
         skip(from_idx)
 
     show_html = request.args.get('html', '')
+    # print request.path
+    redirect_url = request.full_path.replace('&', '%26').replace('?', '%3F')
     if show_html:
-        return render_template('search_wanted_result.html', shop_list=query_result)
+        return render_template('search_wanted_result.html', shop_list=query_result, redirect_url=redirect_url)
 
     return query_result.limit(10).to_json()
 
@@ -57,11 +59,14 @@ def search_wanted():
 @wanted.route('/view/<wanted_shop_id>')
 def view_wanted(wanted_shop_id):
     as_html = request.args.get('html', '')
+    redirect_url = request.args.get('redirect', '').replace('search', 'search_controller')
+    print 'redirect:', redirect_url
 
     try:
         wanted_obj = WantedShop.objects(id=wanted_shop_id).first()
         if as_html:
-            return render_template('publish_wanted.html', wanted_shop=wanted_obj, editable=False)
+            return render_template('publish_wanted.html', wanted_shop=wanted_obj, editable=False,
+                                   redirect_url=redirect_url)
         return wanted_obj.to_json()
     except (ValidationError, AttributeError):
         return '{}'
@@ -85,7 +90,7 @@ def publish_wanted():
 
         shop.is_approved = False
         shop.is_buy = form.is_buy.data
-        print shop.is_buy
+        # print shop.is_buy
         shop.wanter_type = form.wanter_type.data
         shop.intention_type = form.intention_type.data
         shop.business_type = form.business_type.data
@@ -146,4 +151,7 @@ def manage_rent():
 def search_controller():
     if request.method == 'GET':
         is_buy = True if int(request.args.get('is_buy', 0)) else False
-        return render_template('wanted_project.html', is_buy=is_buy)
+        print 'full_path:', request.full_path
+        keys = request.full_path.replace('/wanted/search_controller', '').replace('?', '')
+        print 'search_controller:', keys
+        return render_template('wanted_project.html', is_buy=is_buy, keys=keys)
