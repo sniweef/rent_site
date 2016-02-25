@@ -10,6 +10,9 @@ __author__ = 'hzhigeng'
 wanted = Blueprint('wanted', __name__, url_prefix='/wanted')
 
 
+def replace_url(url):
+    return url.replace('&', '%26').replace('?', '%3F')
+
 @wanted.route('/search')
 def search_wanted():
     try:
@@ -60,7 +63,7 @@ def search_wanted():
 def view_wanted(wanted_shop_id):
     as_html = request.args.get('html', '')
     redirect_url = request.args.get('redirect', '').replace('search', 'search_controller')
-    print 'redirect:', redirect_url
+    # print 'redirect:', redirect_url
 
     try:
         wanted_obj = WantedShop.objects(id=wanted_shop_id).first()
@@ -127,7 +130,7 @@ def delete_wanted(wanted_shop_id):
 def approve_wanted(wanted_shop_id):
     try:
         wanted_shop = WantedShop.objects(id=wanted_shop_id).first()
-        print wanted_shop, wanted_shop.id
+        # print wanted_shop, wanted_shop.id
         wanted_shop.is_approved = True
         wanted_shop.save()
         return 'OK'
@@ -151,7 +154,8 @@ def manage_rent():
 def search_controller():
     if request.method == 'GET':
         is_buy = True if int(request.args.get('is_buy', 0)) else False
-        print 'full_path:', request.full_path
+        # print 'full_path:', request.full_path
         keys = request.full_path.replace('/wanted/search_controller', '').replace('?', '')
-        print 'search_controller:', keys
+        # keys = replace_url(keys)
+        # print 'search_controller:', keys
         return render_template('wanted_project.html', is_buy=is_buy, keys=keys)

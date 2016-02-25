@@ -42,7 +42,7 @@ def search_rent():
         q_expr = q_expr & Q(shops_area__gte=min_area)
 
     if max_price > 0 and max_price > min_price:
-        print max_price, ':', min_price
+        # print max_price, ':', min_price
         q_expr = q_expr & Q(shops_price__gte=min_price, shops_price__lte=max_price)
     elif max_price == 0 and min_price > 0:
         q_expr = q_expr & Q(shops_price__gte=min_price)
@@ -51,7 +51,7 @@ def search_rent():
         order_keyword = ['id', 'shops_price', 'shops_area'][order_by]
     except IndexError:
         abort(400)
-    print order_by, incr
+    # print order_by, incr
 
     if not incr:
         order_keyword = '-' + order_keyword
@@ -88,7 +88,7 @@ def search_rent():
 def view_rent(rent_project_id):
     as_html = request.args.get('html', '')
     redirect_url = request.args.get('redirect', '').replace('search', 'search_controller')
-    print 'redirect:', redirect_url
+    # print 'redirect:', redirect_url
     try:
         rent_project = RentProject.objects(id=rent_project_id).first()
         if as_html:
@@ -126,7 +126,7 @@ def publish_rent():
 
         rent_project.is_approved = False
         rent_project.is_sell = form.is_sell.data
-        print rent_project.is_sell
+        #print rent_project.is_sell
         rent_project.pictures = form.pictures.data
         # url must be None instead of empty string because empty string will cause ValidationError: Not a valid url
         rent_project.brochure = form.brochure.data if form.brochure.data else None
@@ -213,7 +213,7 @@ def manage_rent():
 def search_controller():
     if request.method == 'GET':
         is_sell = True if int(request.args.get('is_sell', 0)) else False
-        print 'full_path:', request.full_path
+        # print 'full_path:', request.full_path
         keys = request.full_path.replace('/rent/search_controller', '').replace('?', '')
-        print 'search_controller:', keys
+        # print 'search_controller:', keys
         return render_template('rent_sold_projects.html', is_sell=is_sell, keys=keys)
