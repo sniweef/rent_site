@@ -122,14 +122,20 @@ function delete_file(delete_link_obj, file_type)
         //console.log(file_type, ':', file_url, delete_url);
         $.get(delete_url, function(result){
             var target_files_url = files_url[file_type];
-            console.log('delete file of server succesfully.');
+            console.log('delete file of server succesfully. target_files_url length:', target_files_url.length);
             for (var i in target_files_url)
             {
                 if (target_files_url[i] == file_url)
                 {
                     console.log('delete ' + i + ' entry');
                     //target_files_url.pop(i);
-                    target_files_url.del(i);
+                    //target_files_url.del(i);
+                    for (var j = parseInt(i); j < target_files_url.length - 1; j++)
+                    {
+                        target_files_url[j] = target_files_url[j+1];
+                        console.log('copying', target_files_url[j+1], target_files_url[j]);
+                    }
+                    target_files_url.length -= 1;
                     var child_idx = parseInt(i) + 1;
                     var target_selector = '#url_list' + file_type + ' list:nth-child(' + child_idx + ')';
                     console.log(target_selector);
@@ -201,18 +207,12 @@ function upload_file(upload_idx) {
             }
             for (var i in file_url_array)
             {
-                if (typeof(file_url_array[i]) != 'string')
-                {
-                    console.log('this is not string. It is:' + typeof(file_url_array[i]));
-                    return ;
-                }
                 var list = $('<list class="list-group-item"></list>');
                 list.appendTo(div);
 
                 var a = $('<a></a>');
                 var file_url = file_url_array[i];
                 console.log(file_url_array, file_url_array[i]);
-                console.log(typeof(file_url));
                 a.attr('href', file_url);
                 a.text(file_url.split('@')[1]);
                 a.appendTo(list);
@@ -317,7 +317,7 @@ function post_rent() {
         }
     });
 }
-Array.prototype.del = function(idx) {
+/*Array.prototype.del = function(idx) {
     if (isNaN(idx) || idx > this.length)
     {
         return false;
@@ -330,7 +330,7 @@ Array.prototype.del = function(idx) {
         }
     }
     this.length -= 1;
-}
+}*/
 /*
    $(document).ready(function() {
    $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
