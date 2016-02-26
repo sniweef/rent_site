@@ -43,7 +43,7 @@ class URLOrEmpty(URL):
 class ShopForm(Form):
     shop_number = StringField('shop_number', validators=[Length(min=1, max=10)])
     area = FloatField('area')
-    price = StringField('price', validators=[Length(max=10)])
+    price = FloatField('price')
     project_condition = StringField('project_condition', validators=[Length(max=100)])
     others = StringField('others', validators=[Length(max=100)])
 
@@ -76,8 +76,8 @@ class PublishWantedForm(Form):
     intention_type = StringField('intention_type', validators=[DataRequired(), Length(max=10)])
     business_type = StringField('business_type', validators=[DataRequired(), Length(max=10)])
     brand_name = StringField('brand_name', validators=[Length(max=10)])
-    area = StringField(validators=[DataRequired(), Length(max=20)])
-    intention_price = StringField(validators=[Length(max=20)])
+    area = FloatField(validators=[DataRequired()])
+    intention_price = FloatField()
     project_demand = StringField('project_demand', validators=[Length(max=50)])
     contacter = StringField('contacter', validators=[Length(min=1, max=50), DataRequired()])
     phone = StringField('phone', validators=[Length(min=1, max=50), DataRequired()])
