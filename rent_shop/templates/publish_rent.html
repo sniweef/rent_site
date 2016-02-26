@@ -114,9 +114,10 @@ function clear_exist_files(file_type) {
 }
 function delete_file(delete_link_obj, file_type)
 {
-    if (confirm('您确定要删除此文件吗？'))
+    var file_link_obj = delete_link_obj.prev();
+    if (confirm('您确定要删除此文件(' + file_link_obj.text() + ')吗？'))
     {
-        var file_url = delete_link_obj.prev().attr('href');
+        var file_url = file_link_obj.attr('href');
         var delete_url = file_url.replace('/resources/', '/resources/delete/');
         //console.log(file_type, ':', file_url, delete_url);
         $.get(delete_url, function(result){
