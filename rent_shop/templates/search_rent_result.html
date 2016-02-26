@@ -1,9 +1,13 @@
-{% macro print_array(array, prefix='') %}
+{% macro print_array(array, prefix='', unit='', sep=' ') %}
 <p class="list-group-item-text">
     {{ prefix }} :
+    {% autoescape false %}
 {% for ele in array %}
-{{ ele }},
+    {% if ele %}
+    {{ ele }}{{ unit }} {{ sep }}
+    {% endif %}
 {% endfor %}
+    {% endautoescape %}
 </p>
 {% endmacro %}
 {% macro pro_type_to_str(pro_type) %}
@@ -18,9 +22,9 @@
         <p class="list-group-item-text">项目名称：{{ shop.project_name }}</p>
         <p class="list-group-item-text">地址：{{ shop.address }}</p>
         {% if shop.shops_price %}
-        {{ print_array(shop.shops_price, '价格') }}
+        {{ print_array(shop.shops_price, '价格', '￥/m<sup>2</sup>') }}
         {% endif %}
-        {{ print_array(shop.shops_area, '使用面积') }}
+        {{ print_array(shop.shops_area, '使用面积', 'm<sup>2</sup>') }}
         {{ print_array(shop.shops_investment, '招商对象') }}
     </a>
 </div>
