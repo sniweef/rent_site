@@ -32,6 +32,7 @@
             <input type="text" class="form-control price" placeholder="" aria-describedby="basic-addon2"
                     value="{{ shop.price if shop }}">
             <span class="input-group-addon" id="basic-addon2">￥/m<sup>2</sup></span>
+            <span class="input-group-addon must-have">*</span>
         </div>
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon2">工程条件</span>
@@ -241,7 +242,7 @@ function post_rent() {
         form_data.append('pictures-'+i, files_url[0][i]);
         console.log('Append: pictures-'+i, files_url[0][i]);
     }
-    if (files_url[1])
+    if (files_url[1].length > 0)
     {
         form_data.append('brochure', files_url[1][0]);;
         console.log('Appends: brochure', files_url[1][0]);;
@@ -370,10 +371,39 @@ function post_rent() {
                     <div class="list-group top-pad-5" id="url_list0">
                         {% if not rent_project.pictures %}
                         <p class="list-group-item">无</p>
+                        {% else %}
+                        <div style="width: 640px; height: 200px; margin-right: auto; margin-left: auto;">
+
+                            <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="10000">
+
+                                <ol class="carousel-indicators">
+                                    {% for picture in rent_project.pictures %}
+                                    <li data-target="#carousel-example-generic" data-slide-to="0" {%if loop.index==1%} class="active"{%endif%}></li>
+                                    {% endfor %}
+                                </ol>
+
+                                <div class="carousel-inner" role="listbox">
+                                    {% for picture in rent_project.pictures %}
+                                    <div class="item {%if loop.index==1%}active{%endif%}">
+                                        <a href="{{ picture }}"><img src="{{ picture }}" alt="img0"></a>
+                                        <div class="carousel-caption">
+                                            <p>
+                                            {{ picture.split('@')[-1] }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+
+                                </div>
+
+                                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> </a>
+                                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span> </a>
+
+                            </div>
+                        </div>
                         {% endif %}
-                        {% for picture in rent_project.pictures %}
-                        <a href="{{ picture }}" class="list-group-item">{{ picture.split('@')[-1] }}</a>
-                        {% endfor %}
                     </div>
                     {% endif %}
 
@@ -463,6 +493,5 @@ function post_rent() {
                 </div>
             </div>
         </div>
-
     </body>
 </html>

@@ -17,7 +17,7 @@ class User(Document):
 class Shop(EmbeddedDocument):
     shop_number = StringField(max_length=10)
     area = FloatField()
-    price = StringField(max_length=10)
+    price = FloatField()
     project_condition = StringField(max_length=50)
     others = StringField(max_length=50)  # including potential tenants
 
