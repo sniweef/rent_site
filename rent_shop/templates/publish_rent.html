@@ -372,20 +372,20 @@ function post_rent() {
                         {% if not rent_project.pictures %}
                         <p class="list-group-item">无</p>
                         {% else %}
-                        <div style="width: 640px; height: 200px; margin-right: auto; margin-left: auto;">
+                        <div style="width: 320px; height: 200px; margin-right: auto; margin-left: auto;">
 
-                            <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="10000">
+                            <div id="pic-carousel" class="carousel slide" data-ride="carousel" data-interval="8000">
 
                                 <ol class="carousel-indicators">
                                     {% for picture in rent_project.pictures %}
-                                    <li data-target="#carousel-example-generic" data-slide-to="0" {%if loop.index==1%} class="active"{%endif%}></li>
+                                    <li data-target="#pic-carousel" data-slide-to="{{loop.index-1}}" {%if loop.index==1%} class="active"{%endif%}></li>
                                     {% endfor %}
                                 </ol>
 
                                 <div class="carousel-inner" role="listbox">
                                     {% for picture in rent_project.pictures %}
                                     <div class="item {%if loop.index==1%}active{%endif%}">
-                                        <a href="{{ picture }}"><img src="{{ picture }}" alt="img0"></a>
+                                        <a href="{{ picture }}"><img style="width:320px; height: 200px" src="{{ picture }}" alt="img0"></a>
                                         <div class="carousel-caption">
                                             <p>
                                             {{ picture.split('@')[-1] }}
@@ -396,9 +396,9 @@ function post_rent() {
 
                                 </div>
 
-                                <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+                                <a class="left carousel-control" href="#pic-carousel" role="button" data-slide="prev">
                                     <span class="glyphicon glyphicon-chevron-left"></span> </a>
-                                <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+                                <a class="right carousel-control" href="#pic-carousel" role="button" data-slide="next">
                                     <span class="glyphicon glyphicon-chevron-right"></span> </a>
 
                             </div>
