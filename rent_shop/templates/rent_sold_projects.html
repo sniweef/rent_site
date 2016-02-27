@@ -23,6 +23,8 @@ function city_filter(city_idx) {
 }
 function area_filter(area_idx) {
     var idx_val_map = [
+        [0, 0],
+        [0, 0],
         [0, 100],
         [100, 500],
         [500, 1000],
@@ -33,6 +35,8 @@ function area_filter(area_idx) {
 }
 function price_filter(price_idx) {
     var idx_val_map = [
+        [0, 0],
+        [0, 0],
         [0, 50],
         [50, 300],
         [300, 800],
@@ -45,6 +49,8 @@ function price_filter(price_idx) {
 function sort_filter(sort_idx) {
     var idx_val_map = [
         // order_by, incr
+        [0, 0],
+        [0, 0],
         [1, 1],
         [1, 0],
         [2, 1],
@@ -55,6 +61,8 @@ function sort_filter(sort_idx) {
 }
 function invest_filter(invest_idx) {
     var idx_val_map = [
+        '',
+        '',
         '百货超市',
         '零售餐饮',
         '娱乐休闲',
@@ -72,14 +80,19 @@ function invest_filter(invest_idx) {
     'invest-selector': invest_filter,
 };
 
+function change_button_text(button_obj, text) {
+        button_obj.text(text);
+        var span = $('<span class="caret">');
+        span.appendTo(button_obj);
+}
 function li_selected() {
     var parent_id = $(this).parent().attr('id');
     console.log(parent_id);
     if (parent_id in selector_func_map)
     {
         selector_func_map[parent_id]($(this).index());
-        $(this).closest('ul').prev().text($(this).text());
-        $(this).closest('ul').prev().prev().text($(this).text());
+        change_button_text($(this).closest('ul').prev(), $(this).text());
+        change_button_text($(this).closest('ul').prev().prev(), $(this).text());
     }
     refresh_result();
 }
@@ -135,6 +148,8 @@ $(function(){
                                     面积 <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" id="area-selector">
+                                    <li><a>面积</a></li>
+                                    <li class="divider"></li>
                                     <li><a>100m<sup>2</sup>以下</a></li>
                                     <li><a>100m - 500m<sup>2</sup></a></li>
                                     <li><a>500m - 1000m<sup>2</sup></a></li>
@@ -146,6 +161,8 @@ $(function(){
                                     价格 <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" id="price-selector">
+                                    <li><a>价格</a></li>
+                                    <li class="divider"></li>
                                     <li><a>50元/m<sup>2</sup>以下</a></li>
                                     <li><a>50 - 300元/m<sup>2</sup></a></li>
                                     <li><a>300 - 800元/m<sup>2</sup></a></li>
@@ -159,6 +176,8 @@ $(function(){
                                     招商对象<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" id="invest-selector">
+                                    <li><a>招商对象</li>
+                                    <li class="divider"></li>
                                     <li><a>百货超市</a></li>
                                     <li><a>零售餐饮</a></li>
                                     <li><a>娱乐休闲</a></li>
@@ -173,6 +192,8 @@ $(function(){
                                     排序<span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" id="sort-selector">
+                                    <li><a>排序</a></li>
+                                    <li class="divider"></li>
                                     <li><a>价格从低到高</a></li>
                                     <li><a>价格从高到低</a></li>
                                     <li><a>使用面积从小到大</a></li>

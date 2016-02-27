@@ -25,6 +25,8 @@ function is_buy_filter(idx) {
 }
 function area_filter(area_idx) {
     var idx_val_map = [
+        [0, 0],
+        [0, 0],
         [0, 100],
         [100, 500],
         [500, 1000],
@@ -34,15 +36,15 @@ function area_filter(area_idx) {
     replace_arg('max_area', idx_val_map[area_idx][1]);
 }
 function wanter_filter(idx) {
-    var idx_val_map = ['个人', '加盟商', '公司直营'];
+    var idx_val_map = ['', '', '个人', '加盟商', '公司直营'];
     replace_arg('wanter', idx_val_map[idx]);
 }
 function intention_filter(idx) {
-    var idx_val_map = ['购物中心', '步行街', '星级酒店', '社区商业'];
+    var idx_val_map = ['', '', '购物中心', '步行街', '星级酒店', '社区商业'];
     replace_arg('intention', idx_val_map[idx]);
 }
 function business_filter(idx) {
-    var idx_val_map = ['零售', '专卖', '餐饮', '娱乐', '生活服务', '银行', '金融'];
+    var idx_val_map = ['', '', '零售', '专卖', '餐饮', '娱乐', '生活服务', '银行', '金融'];
     replace_arg('business', idx_val_map[idx]);
 }
 var selector_func_map = {
@@ -52,14 +54,19 @@ var selector_func_map = {
     'intention-selector': intention_filter,
     'business-selector': business_filter,
 };
-
+function change_button_text(button_obj, text) {
+        button_obj.text(text);
+        var span = $('<span class="caret">');
+        span.appendTo(button_obj);
+}
 function li_selected() {
     var parent_id = $(this).parent().attr('id');
     if (parent_id in selector_func_map)
     {
         selector_func_map[parent_id]($(this).index());
-        $(this).closest('ul').prev().text($(this).text());
-        $(this).closest('ul').prev().prev().text($(this).text());
+        change_button_text($(this).closest('ul').prev(), $(this).text());
+        change_button_text($(this).closest('ul').prev().prev(), $(this).text());
+        //$(this).closest('ul').prev().prev().text($(this).text());
     }
     refresh_result();
 }
@@ -126,6 +133,8 @@ $(function(){
                             面积 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" id="area-selector">
+                            <li><a>面积</a></li>
+                            <li class="divider"></li>
                             <li><a>100m<sup>2</sup>以下</a></li>
                             <li><a>100m - 500m<sup>2</sup></a></li>
                             <li><a>500m - 1000m<sup>2</sup></a></li>
@@ -137,6 +146,8 @@ $(function(){
                             经营主体 <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" id="wanter-selector">
+                            <li><a>经营主体</a></li>
+                            <li class="divider"></li>
                             <li><a>个人</a></li>
                             <li><a>加盟商</a></li>
                             <li><a>公司直营</a></li>
@@ -147,6 +158,8 @@ $(function(){
                             意向商业<span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" id="intention-selector">
+                            <li><a>意向商业</a></li>
+                            <li class="divider"></li>
                             <li><a>购物中心</a></li>
                             <li><a>步行街</a></li>
                             <li><a>星级酒店</a></li>
@@ -158,6 +171,8 @@ $(function(){
                             业态<span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" id="business-selector">
+                            <li><a>业态</a></li>
+                            <li class="divider"></li>
                             <li><a>零售</a></li>
                             <li><a>专卖</a></li>
                             <li><a>餐饮</a></li>
