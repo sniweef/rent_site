@@ -206,7 +206,7 @@ def disable_rent(rent_project_id):
 @rent.route('/list')
 def manage_rent():
     if request.method == 'GET':
-        return render_template('manage.html', obj_list=RentProject.objects(), prefix='rent')
+        return render_template('manage.html', obj_list=RentProject.objects(), prefix='rent', redirect='/rent/list')
 
 
 @rent.route('/search_controller')

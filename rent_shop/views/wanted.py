@@ -143,11 +143,11 @@ def approve_wanted(wanted_shop_id):
 def manage_rent():
     obj_list = []
     for i in WantedShop.objects():
-        i.project_name = i.project_demand
+        i.project_name = i.contacter
         obj_list.append(i)
 
     if request.method == 'GET':
-        return render_template('manage.html', obj_list=obj_list, prefix='wanted')
+        return render_template('manage.html', obj_list=obj_list, prefix='wanted', redirect='/wanted/list')
 
 
 @wanted.route('/search_controller')
