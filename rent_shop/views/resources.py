@@ -4,6 +4,7 @@ import datetime
 from flask import Blueprint, request, abort, send_file
 from bson.objectid import ObjectId
 from instance.config import SHOP_PICS_ROOT_DIR, PIC_SERVER_PORT, PIC_SERVER_IP
+from rent_shop.views import *
 
 __author__ = 'hzhigeng'
 
@@ -20,7 +21,7 @@ def new_resources():
         if not os.path.exists(pic_dir_path):
             os.makedirs(pic_dir_path)
     except IOError:
-        print('mkdir %s failed!' % pic_dir_path)
+        log(ERROR, 'mkdir %s failed!' % pic_dir_path)
         abort(500)
 
     url_preffix = 'http://%s:%d/resources/%s' %(PIC_SERVER_IP, PIC_SERVER_PORT, dest_dir_name)
@@ -32,6 +33,7 @@ def new_resources():
         new_file_path = os.path.join(pic_dir_path, new_filename)
         #print filename_suffix, new_file_path
         file_obj.save(new_file_path)
+        log(INFO, 'savied file: %s' % new_file_path)
         pic_urls.append(url_preffix + new_filename)
 
     return json.dumps(pic_urls)

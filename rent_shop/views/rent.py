@@ -7,6 +7,7 @@ from mongoengine.errors import ValidationError, InvalidQueryError
 from bson.objectid import ObjectId
 from rent_shop.forms import *
 from rent_shop.models import RentProject, Shop
+from rent_shop.views import *
 
 __author__ = 'hzhigeng'
 
@@ -29,7 +30,8 @@ def search_rent():
         investment = request.args.get('invest', '')
         if investment == '其它':
             investment = ''
-    except ValueError:
+    except ValueError, e:
+        log(ERROR, 'searching key has invalid value: %s' % e)
         abort(400)
 
     key = key.strip()
@@ -50,6 +52,7 @@ def search_rent():
     try:
         order_keyword = ['id', 'shops_price', 'shops_area'][order_by]
     except IndexError:
+        log(ERROR, 'unknown order_by key: %d' % order_by)
         abort(400)
     # print order_by, incr
 
@@ -77,6 +80,7 @@ def search_rent():
     redirect_url = request.full_path.replace('&', '%26').replace('?', '%3F')
     # print request.full_path
     if show_html:
+        log(INFO, 'redirect_url is %s' % redirect_url)
         return render_template('search_rent_result.html', shop_list=query_result.order_by(order_keyword),
                                redirect_url=redirect_url)
 
@@ -96,12 +100,14 @@ def view_rent(rent_project_id):
                                    redirect_url=redirect_url)
         return rent_project.to_json()
     except (ValidationError, AttributeError):
+        log(ERROR, 'Not-existed rent project(id: %s)' % rent_project_id)
         return '{}'
 
 
 def get_or_create_user(form):
     user = User.objects(Q(phone=form.phone.data)).first()
     if not user:
+        log(DEBUG, 'creating new user')
         user = User(nickname=str(ObjectId()))
     return user
 
@@ -119,6 +125,7 @@ def publish_rent():
         if form.id.data:
             rent_project = RentProject.objects(id=form.id.data).first()
             if not rent_project:
+                log(ERROR, 'Not-existed rent project(id: %s)' % form.id.data)
                 return 'Cannot find the specific rent_project with id %s' % form.id.data, 404
         else:
             rent_project = RentProject()

@@ -3,6 +3,7 @@ __author__ = 'hzhigeng'
 from flask import Flask
 from rent_shop.views import rent, wanted, resources
 from mongoengine import connect
+from logger import log_warn as log
 
 __all__ = ['create_app']
 

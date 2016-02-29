@@ -1,3 +1,4 @@
+import logging
 from flask import Blueprint, request, abort, render_template
 from mongoengine import Q
 from mongoengine.errors import ValidationError, InvalidQueryError
@@ -24,7 +25,8 @@ def search_wanted():
         wanter = request.args.get('wanter', '')
         intention = request.args.get('intention', '')
         business = request.args.get('business', '')
-    except ValueError:
+    except ValueError, e:
+        log(logging.ERROR, 'Search wanted project fails: %s' % e)
         from_idx = 0
 
     key = key.strip()
@@ -54,6 +56,7 @@ def search_wanted():
     # print request.path
     redirect_url = request.full_path.replace('&', '%26').replace('?', '%3F')
     if show_html:
+        log(logging.DEBUG, )
         return render_template('search_wanted_result.html', shop_list=query_result, redirect_url=redirect_url)
 
     return query_result.limit(10).to_json()
